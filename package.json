@@ -1,0 +1,31 @@
+{
+  "name": "gs-json",
+  "version": "1.0.0",
+  "description": "Retrieving Google Spreadsheets as JSON",
+  "keywords": [
+    "google",
+    "spreadsheets",
+    "sheets",
+    "json"
+  ],
+  "homepage": "https://bitbucket.org/interactivethings/spreadsheet-api",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/interactivethings/spreadsheet-api.git"
+  },
+  "main": "src/index.js",
+  "scripts": {
+    "test": "vows --spec"
+  },
+  "author": "Jeremy Stucki, Interactive Things",
+  "license": "BSD",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "dependencies": {
+    "request": "^2.48.0"
+  },
+  "devDependencies": {
+    "vows": "~0.7.0"
+  }
+}
