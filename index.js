@@ -37,13 +37,6 @@ function fetchSpreadsheet(key, callback) {
 }
 
 function fetchWorksheetById(key, worksheetId, callback) {
-  fetch(['list', key, worksheetId], function(err, feed) {
-    if (err) return callback(err);
-    callback(null, parseWorksheetFeed(feed));
-  });
-}
-
-function fetchWorksheetCellsById(key, worksheetId, callback) {
   fetch(['cells', key, worksheetId], function(err, feed) {
     if (err) return callback(err);
     callback(null, parseWorksheetFeed(feed));
@@ -85,40 +78,46 @@ function parseWorksheetFeed(feed) {
   return {
     updated: getIn(feed, ['updated', '$t']),
     title: getIn(feed, ['title', '$t']),
-    data: feed.entry ? feed.entry.map(parseRow) : null
+    data: feed.entry ? parseCellsIntoRows(feed.entry) : null
   };
 }
 
-function isValueKey(key) {
-  // Keys which represent values are prefixed with 'gsx$'
-  return (/^gsx\$/).test(key);
+function getCellData(cell) {
+  var data = cell.gs$cell;
+  return {
+    col: +data.col,
+    row: +data.row,
+    value: data.numericValue ? +data.numericValue : data.$t
+  };
 }
 
-function parseValueKey(key) {
-  // Strip the 'gsx$' prefix from 'gsx$colname'
-  var re = /^gsx\$(.*)$/,
-      matches = re.exec(key);
-  return matches ? matches[1] : null;
-}
-
-function isNumeric(n) {
-  // http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric/174921#174921
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-function parseCell(value) {
-  if (value === null || value === '') return null;
-  if (isNumeric(value)) return +value;
-  return value;
-}
-
-function parseRow(row) {
-  var keys = Object.keys(row),
-      valueKeys = keys.filter(isValueKey);
-  return valueKeys.reduce(function(parsed, key) {
-    parsed[parseValueKey(key)] = parseCell(getIn(row, [key, '$t']));
-    return parsed;
+function createRowFromHeaders(headers) {
+  return headers.reduce(function(row, key) {
+    row[key] = null;
+    return row;
   }, {});
+}
+
+function parseCellsIntoRows(cells) {
+  var cellsData = cells.map(getCellData),
+      headerCells = cellsData.filter(function(d) { return d.row === 1; }),
+      headers = headerCells.map(function(d) { return d.value; }),
+      headersByCol = headerCells.reduce(function(byCol, d) {
+        byCol[d.col] = d.value;
+        return byCol;
+      }, {}),
+      bodyCells = cellsData.filter(function(d) { return d.row !== 1; }),
+      bodyByRow = bodyCells.reduce(function(byRow, d) {
+        var row = byRow[d.row] || createRowFromHeaders(headers),
+            key = headersByCol[d.col];
+        row[key] = d.value;
+        byRow[d.row] = row;
+        return byRow;
+      }, {});
+
+  return Object.keys(bodyByRow)
+    .sort(function(a, b) { return +a - +b; })
+    .map(function(row) { return bodyByRow[row]; });
 }
 
 // Public API
