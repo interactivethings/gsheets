@@ -16,9 +16,9 @@ if (!argv.key) {
 }
 
 if (argv.id) {
-  gs.getWorksheet(argv.key, argv.id, handleResponse);
+  gs.getWorksheetById(argv.key, argv.id, handleResponse);
 } else if (argv.title) {
-  gs.getWorksheetByTitle(argv.key, argv.title, handleResponse);
+  gs.getWorksheet(argv.key, argv.title, handleResponse);
 } else {
   gs.listWorksheets(argv.key, handleResponse);
 }
