@@ -1,6 +1,26 @@
 # gsheets
 
-Get public Google Sheets as plain JavaScript/JSON. Works in Node.js and on the Command Line.
+Get public Google Sheets as plain JavaScript/JSON.
+
+Works in Node.js
+
+```sh
+npm install gsheets -g
+```
+
+```js
+var gs = require('gsheets');
+
+gs.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', function(err, res) {
+  console.log(res);
+});
+```
+
+and on the Command Line:
+
+```sh
+gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
+```
 
 ### Features
 
