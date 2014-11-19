@@ -123,7 +123,7 @@ function parseCellsIntoRows(cells) {
 // Public API
 
 module.exports = {
-  getWorksheetByTitle: fetchWorksheetByTitle,
-  getWorksheet: fetchWorksheetById,
+  getWorksheet: fetchWorksheetByTitle,
+  getWorksheetById: fetchWorksheetById,
   listWorksheets: fetchSpreadsheet
 };
