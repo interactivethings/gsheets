@@ -16,7 +16,18 @@ gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', f
 });
 ```
 
-and on the Command Line:
+the browser (use the pre-built `gsheets.js` or `gsheets.min.js`)
+
+```html
+<script src="../gsheets.js"></script>
+<script>
+  gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', function(err, res) {
+    console.log(res);
+  });
+</script>
+```
+
+and on the Command Line.
 
 ```sh
 gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
@@ -36,10 +47,6 @@ gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pret
 * Authorization (only works with [published spreadsheets](https://support.google.com/docs/answer/37579?hl=en&ref_topic=2818999))
 * Querying, ordering, updating
 * Caching. Use a reverse proxy or implement your own caching strategy. I recommend this strongly since Google's API isn't the fastest and you don't want to hit rate limits.
-
-### Planned
-
-* Browser support (currently only Node.js, sorry!)
 
 ### Caveats
 

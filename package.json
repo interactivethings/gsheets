@@ -20,7 +20,8 @@
   },
   "main": "./index.js",
   "scripts": {
-    "test": "vows --spec"
+    "test": "vows --spec",
+    "build": "webpack index.js gsheets.js --output-library=gsheets --output-library-target=umd && webpack index.js gsheets.min.js -p --output-library=gsheets --output-library-target=umd"
   },
   "author": "Jeremy Stucki, Interactive Things",
   "license": "BSD",
@@ -28,11 +29,12 @@
     "node": "0.10.x"
   },
   "dependencies": {
+    "axios": "^0.4.1",
     "minimist": "^1.1.0",
-    "request": "^2.48.0",
     "rw": "^0.1.4"
   },
   "devDependencies": {
-    "vows": "~0.7.0"
+    "vows": "~0.7.0",
+    "webpack": "^1.4.13"
   }
 }

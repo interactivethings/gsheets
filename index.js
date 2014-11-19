@@ -1,5 +1,4 @@
-var request = require('request'),
-    http = require('http');
+var axios = require('axios');
 
 var BASE_URL = 'https://spreadsheets.google.com/feeds/';
 
@@ -17,16 +16,17 @@ function getIn(o, keys) {
 
 function fetch(params, callback) {
   var url = BASE_URL + params.join('/') + '/public/values?alt=json';
-  request.get({
-    url: url,
-    json: true
-  }, function(err, resp, body) {
-    if (err) return callback(err);
-    if (!resp) return callback(new Error('No response.'));
-    if (resp.statusCode >= 400) return callback(new Error('Google Spreadsheets responded with HTTP error ' + resp.statusCode + ' (' + http.STATUS_CODES[resp.statusCode] + '). Are you sure the spreadsheet exists and is published?'));
-    if (!body.feed) return callback(new Error('No feed was returned'));
-    callback(null, body.feed);
-  });
+  axios
+    .get(url)
+    .then(function(res) {
+      if (!res.data.feed) return callback(new Error('No feed was returned'));
+      callback(null, res.data.feed);
+    })
+    .catch(function(res) {
+      if (res instanceof Error) return callback(res);
+      // if (!res) return callback(new Error('No response.'));
+      return callback(new Error('Google Spreadsheets responded with HTTP error ' + res.status + '. Are you sure the spreadsheet exists and is published?'));
+    });
 }
 
 function fetchSpreadsheet(key, callback) {
