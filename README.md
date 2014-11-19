@@ -129,7 +129,7 @@ Write spreadsheet contents to a file as JSON.
 
 ```
 gsheets --key [--id] [--title] [--out] [--pretty]
-  --key     Spreadsheet key; lists worksheets if no other option is provided
+  --key     Spreadsheet key; Outputs spreadsheet info if no other option is provided
   --out     Output file; defaults to /dev/stdout
   --id      Worksheet ID; use either this or --title to get worksheet contents
   --title   Worksheet title; use either this or --id to get worksheet contents
