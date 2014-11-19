@@ -1,10 +1,11 @@
 {
-  "name": "gs-json",
+  "name": "gsheets",
   "version": "1.0.0",
-  "description": "Retrieving Google Spreadsheets as JSON",
+  "description": "Get public Google Spreadsheets as plain JavaScript/JSON",
   "keywords": [
     "google",
     "spreadsheets",
+    "worksheets",
     "sheets",
     "json"
   ],
@@ -13,7 +14,10 @@
     "type": "git",
     "url": "https://bitbucket.org/interactivethings/spreadsheet-api.git"
   },
-  "main": "src/index.js",
+  "bin": {
+    "gsheets": "./bin/gsheets"
+  },
+  "main": "./index.js",
   "scripts": {
     "test": "vows --spec"
   },
@@ -23,7 +27,9 @@
     "node": "0.10.x"
   },
   "dependencies": {
-    "request": "^2.48.0"
+    "minimist": "^1.1.0",
+    "request": "^2.48.0",
+    "rw": "^0.1.4"
   },
   "devDependencies": {
     "vows": "~0.7.0"

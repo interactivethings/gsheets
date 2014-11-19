@@ -58,9 +58,9 @@ vows.describe('google-spreadsheet-service').addBatch({
       // See http://stackoverflow.com/questions/1353684/detecting-an-invalid-date-date-instance-in-javascript
       assert.isNumber((new Date(worksheet.updated)).getTime());
     },
-    '"data" is array with 4 rows': function(worksheet) {
+    '"data" is array with 5 rows': function(worksheet) {
       assert.isArray(worksheet.data);
-      assert.strictEqual(worksheet.data.length, 4);
+      assert.strictEqual(worksheet.data.length, 5);
     },
     'rows have "id", "name", "väl-ue", "should" columns': function(worksheet) {
       worksheet.data.forEach(function(row) {
@@ -85,6 +85,10 @@ vows.describe('google-spreadsheet-service').addBatch({
       assert.strictEqual(worksheet.data[3].id, 0);
       assert.strictEqual(worksheet.data[3].name, 'null');
       assert.strictEqual(worksheet.data[3]['väl-ue'], '1+2');
+
+      assert.strictEqual(worksheet.data[4].id, '4');
+      assert.strictEqual(worksheet.data[4].name, 'money');
+      assert.strictEqual(worksheet.data[4]['väl-ue'], 12.3);
     },
   },
   'Empty Worksheet': {

@@ -1,72 +1,130 @@
-# Spreadsheet API
+# gsheets
 
-A tiny API server for retrieving Google Spreadsheets as JSON.
+Get public Google Spreadsheets as plain JavaScript/JSON.
 
-### Features:
+### Features
 
-* Simply get contents of Google Spreadsheet as JSON
-* Numbers are parsed where possible (currently it's not possible to disable this)
+* Plain JS/JSON data. No 'models'. Just use `.map`, `.filter` etc.
+* Correct handling of numeric cells
 * Empty cells are converted to `null`
 * A bit of metadata (i.e. when a spreadsheet was updated)
+* Empty rows are omitted
 
-### Intentionally left out:
+### Non-features
 
-* Querying, ordering or any of the fancy stuff.
-* Writing to spreadsheets.
-* Accessing the cells feed. We just care about worksheet contents in rows.
+* Authorization
+* Querying, ordering, updating
 * Caching. Use a reverse proxy or implement your own caching strategy.
 
-### Why?
+### Caveats
+
+* Beware of cells formatted as dates! Their values will be returned as Excel-style [DATEVALUE](http://office.microsoft.com/en-001/excel-help/datevalue-function-HP010062284.aspx) numbers (i.e. based on the number of *days* since 01-01-1900)
+
+### Why not use Tabletop?
 
 There are a few libraries around which allow you to access Google Spreadsheets, most notably Tabletop.js. They all have a few drawbacks:
 
-- They wrap the output in classes or models with a custom API, whereas all we really need is JSON
-- Tabletop just logs errors to the console which makes proper error handling impossible
-- Incorrect parsing of cell values
+* They wrap the output in classes or models with a custom API, whereas all we really need is an array of JS objects
+* Tabletop just logs errors to the console which makes proper error handling impossible
+* Incorrect parsing of cell values (when using the row-based lists feed, you only get the *formatted* value for numbers, e.g. `123,456.79` instead of `123456.789`)
 
-## API
+## Node API
 
-GET **/KEY.json**
+```js
+var gs = require('gsheets');
+```
 
-List the worksheets of a spreadsheet. Example response:
+#### listWorksheets(<i>spreadsheetKey</i>, <i>callback</i>)
 
-```json
+Returns a list of worksheets contained in a spreadsheet.
+
+```js
+gs.listWorksheets('MY_KEY', function(err, res) {
+  // ...
+});
+```
+
+Example Response:
+
+```js
 {
-  "updated" : "2014-02-11T10:23:58.718Z",
-  "worksheets" : [
+  "updated": "2014-11-19T10:20:18.068Z",
+  "worksheets": [
     {
-      "id" : "od6",
-      "title" : "worksheet-title"
-    }
+      "id": "od6",
+      "title": "foobar"
+    },
+    // more worksheets ...
   ]
 }
 ```
 
-GET **/KEY/SHEETNAME.json**
+#### getWorksheet(<i>spreadsheetKey</i>, <i>worksheetId</i>, <i>callback</i>)
 
-Get contents of a worksheet. Note that `data` is `null` when the worksheet is empty. Example response:
+Returns the contents of a worksheet.
 
-```json
+```js
+gs.getWorksheet('MY_KEY', 'od6' function(err, res) {
+  // ...
+});
+```
+
+Example Response:
+
+```js
 {
-  "updated" : "2014-02-11T10:23:58.718Z",
-  "title" : "worksheet-title",
-  "data" : [
+  "updated": "2014-11-19T10:20:18.068Z",
+  "title": "foobar",
+  "data": [
     {
-      "a_column" : null,
-      "some_column" : 1,
-      "another_column" : "foo"
-    }
+      "foo": "bar",
+      "baz": 42,
+      "boing": null
+    },
+    // more rows ...
   ]
 }
 ```
 
-GET **/purge/KEY.json**
+#### getWorksheetByTitle(<i>worksheetTitle</i>, <i>callback</i>)
 
-Purge cache for all worksheets in the specified spreadsheet. Will respond with an error if Fastly isn't configured.
+Returns the contents of a worksheet, specified by its title. Note that this generates two requests (to resolve a worksheet's title).
 
-GET **/purge/KEY/SHEETNAME.json**
+```js
+gs.getWorksheetByTitle('MY_KEY', 'foobar' function(err, res) {
+  // ...
+});
+```
 
-Purge cache for an individual worksheet. Will respond with an error if Fastly isn't configured.
+Example Response:
+
+```js
+{
+  "updated": "2014-11-19T10:20:18.068Z",
+  "title": "foobar",
+  "data": [
+    {
+      "foo": "bar",
+      "baz": 42,
+      "boing": null
+    },
+    // more rows ...
+  ]
+}
+```
+
+## Command Line
+
+Write spreadsheet contents to a file as JSON.
+
+```
+gsheets --key [--id] [--title] [--out] [--pretty]
+  --key     Spreadsheet key
+  --out     Output file; default /dev/stdout
+  --id      Worksheet ID (use either this or --title)
+  --title   Worksheet title (use either this or --id)
+  --pretty  Pretty-print JSON
+```
 
 ## Author
 
@@ -74,4 +132,4 @@ Jeremy Stucki, [Interactive Things](http://www.interactivethings.com)
 
 ## License
 
-BSD, see LICENSE.txt
+BSD, see LICENSE
