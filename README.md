@@ -2,16 +2,16 @@
 
 Get public Google Sheets as plain JavaScript/JSON.
 
-Works in Node.js
-
 ```sh
 npm install gsheets -g
 ```
 
-```js
-var gs = require('gsheets');
+Works in Node.js
 
-gs.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', function(err, res) {
+```js
+var gsheets = require('gsheets');
+
+gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', function(err, res) {
   console.log(res);
 });
 ```
