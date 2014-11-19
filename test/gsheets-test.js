@@ -1,14 +1,14 @@
 var vows = require('vows'),
     assert = require('assert'),
-    spreadsheetService = require('../index');
+    gsheets = require('../index');
 
 // var TEST_SPREADSHEET_KEY = '0Ah1wZzkSewdkdFljWjJUWm14TmkxTGZIaHdDTUEyeVE'; // old
 var TEST_SPREADSHEET_KEY = '1dmAQO0zCQz5SNUKalw9NNXwTM6TgDBZ820Ftw-cz5gU'; // new
 
-vows.describe('google-spreadsheet-service').addBatch({
+vows.describe('gsheets').addBatch({
   'Spreadsheet': {
     topic: function() {
-      spreadsheetService.sheets(TEST_SPREADSHEET_KEY, this.callback);
+      gsheets.listWorksheets(TEST_SPREADSHEET_KEY, this.callback);
     },
     'can be fetched': function(err, spreadsheet) {
       assert.isNull(err);
@@ -36,7 +36,7 @@ vows.describe('google-spreadsheet-service').addBatch({
   },
   'Non-existent Spreadsheet': {
     topic: function() {
-      spreadsheetService.sheets('xyz', this.callback);
+      gsheets.listWorksheets('xyz', this.callback);
     },
     'provides an error': function(err, spreadsheet) {
       assert.instanceOf(err, Error);
@@ -45,7 +45,7 @@ vows.describe('google-spreadsheet-service').addBatch({
   },
   'Worksheet': {
     topic: function() {
-      spreadsheetService.sheet(TEST_SPREADSHEET_KEY, 'something', this.callback);
+      gsheets.getWorksheet(TEST_SPREADSHEET_KEY, 'something', this.callback);
     },
     'can be fetched': function(err, worksheet) {
       assert.isNull(err);
@@ -93,7 +93,7 @@ vows.describe('google-spreadsheet-service').addBatch({
   },
   'Empty Worksheet': {
     topic: function() {
-      spreadsheetService.sheet(TEST_SPREADSHEET_KEY, 'nothing', this.callback);
+      gsheets.getWorksheet(TEST_SPREADSHEET_KEY, 'nothing', this.callback);
     },
     'can be fetched': function(err, worksheet) {
       assert.isNull(err);
@@ -112,7 +112,7 @@ vows.describe('google-spreadsheet-service').addBatch({
   },
   'Non-existent Worksheet': {
     topic: function() {
-      spreadsheetService.sheet(TEST_SPREADSHEET_KEY, 'abc', this.callback);
+      gsheets.getWorksheet(TEST_SPREADSHEET_KEY, 'abc', this.callback);
     },
     'provides an error': function(err, worksheet) {
       assert.instanceOf(err, Error);
