@@ -7,7 +7,8 @@
     "spreadsheets",
     "worksheets",
     "sheets",
-    "json"
+    "json",
+    "cli"
   ],
   "homepage": "https://bitbucket.org/interactivethings/spreadsheet-api",
   "repository": {

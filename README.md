@@ -1,37 +1,42 @@
 # gsheets
 
-Get public Google Spreadsheets as plain JavaScript/JSON.
+Get public Google Spreadsheets as plain JavaScript/JSON. Works in Node.js and on the Command Line.
 
 ### Features
 
 * Plain JS/JSON data. No 'models'. Just use `.map`, `.filter` etc.
-* Correct handling of numeric cells
+* Correct handling of numeric cells (no formatted strings for numbers!)
 * Empty cells are converted to `null`
 * A bit of metadata (i.e. when a spreadsheet was updated)
 * Empty rows are omitted
+* Correct handling of empty worksheets
 
 ### Non-features
 
 * Authorization
 * Querying, ordering, updating
-* Caching. Use a reverse proxy or implement your own caching strategy.
+* Caching. Use a reverse proxy or implement your own caching strategy. I recommend this strongly since Google's API isn't the fastest and you don't want to hit rate limits.
+
+### Planned
+
+* Browser support (currently only Node.js, sorry!)
 
 ### Caveats
 
-* Beware of cells formatted as dates! Their values will be returned as Excel-style [DATEVALUE](http://office.microsoft.com/en-001/excel-help/datevalue-function-HP010062284.aspx) numbers (i.e. based on the number of *days* since 01-01-1900)
+* Beware of cells formatted as dates! Their values will be returned as Excel-style [DATEVALUE](http://office.microsoft.com/en-001/excel-help/datevalue-function-HP010062284.aspx) numbers (i.e. based on the number of *days* since January 1, 1900)
 
-### Why not use Tabletop?
+### Why not use another library?
 
-There are a few libraries around which allow you to access Google Spreadsheets, most notably Tabletop.js. They all have a few drawbacks:
+There are a few libraries around which allow you to access Google Spreadsheets, most notably [Tabletop](https://github.com/jsoma/tabletop). However, they all have one or several drawbacks:
 
 * They wrap the output in classes or models with a custom API, whereas all we really need is an array of JS objects
 * Tabletop just logs errors to the console which makes proper error handling impossible
-* Incorrect parsing of cell values (when using the row-based lists feed, you only get the *formatted* value for numbers, e.g. `123,456.79` instead of `123456.789`)
+* Incorrect handling of numeric cell values (you only get a *formatted* string instead of the actual number, e.g. `"123'456.79"` instead of `123456.789`)
 
 ## Node API
 
 ```js
-var gs = require('gsheets');
+var gsheets = require('gsheets');
 ```
 
 #### listWorksheets(<i>spreadsheetKey</i>, <i>callback</i>)
@@ -39,7 +44,7 @@ var gs = require('gsheets');
 Returns a list of worksheets contained in a spreadsheet.
 
 ```js
-gs.listWorksheets('MY_KEY', function(err, res) {
+gsheets.listWorksheets('MY_KEY', function(err, res) {
   // ...
 });
 ```
@@ -59,12 +64,14 @@ Example Response:
 }
 ```
 
-#### getWorksheet(<i>spreadsheetKey</i>, <i>worksheetId</i>, <i>callback</i>)
+#### getWorksheet(<i>spreadsheetKey</i>, <i>worksheetTitle</i>, <i>callback</i>)
 
-Returns the contents of a worksheet.
+Returns the contents of a worksheet, specified by its title. *Note* that this generates two requests (to resolve a worksheet's title). If you know a worksheet's ID (e.g. via a previous call to `listWorksheets`), use `getWorksheetById`
+
+For empty worksheets `data` is `null`.
 
 ```js
-gs.getWorksheet('MY_KEY', 'od6' function(err, res) {
+gsheets.getWorksheet('MY_KEY', 'od6' function(err, res) {
   // ...
 });
 ```
@@ -86,12 +93,14 @@ Example Response:
 }
 ```
 
-#### getWorksheetByTitle(<i>worksheetTitle</i>, <i>callback</i>)
+#### getWorksheetById(<i>spreadsheetKey</i>, <i>worksheetId</i>, <i>callback</i>)
 
-Returns the contents of a worksheet, specified by its title. Note that this generates two requests (to resolve a worksheet's title).
+Returns the contents of a worksheet, specified by its ID.
+
+For empty worksheets `data` is `null`.
 
 ```js
-gs.getWorksheetByTitle('MY_KEY', 'foobar' function(err, res) {
+gsheets.getWorksheetByTitle('MY_KEY', 'foobar' function(err, res) {
   // ...
 });
 ```
@@ -119,10 +128,10 @@ Write spreadsheet contents to a file as JSON.
 
 ```
 gsheets --key [--id] [--title] [--out] [--pretty]
-  --key     Spreadsheet key
-  --out     Output file; default /dev/stdout
-  --id      Worksheet ID (use either this or --title)
-  --title   Worksheet title (use either this or --id)
+  --key     Spreadsheet key; lists worksheets if no other option is provided
+  --out     Output file; defaults to /dev/stdout
+  --id      Worksheet ID; use either this or --title to get worksheet contents
+  --title   Worksheet title; use either this or --id to get worksheet contents
   --pretty  Pretty-print JSON
 ```
 
