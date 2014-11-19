@@ -15,6 +15,11 @@ if (!argv.key) {
   process.exit();
 }
 
+if (argv.id && argv.title) {
+  console.error("Please use only --title OR --id");
+  process.exit();
+}
+
 if (argv.id) {
   gs.getWorksheetById(argv.key, argv.id, handleResponse);
 } else if (argv.title) {
