@@ -1,6 +1,6 @@
 {
   "name": "gsheets",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Get public Google Spreadsheets as plain JavaScript/JSON",
   "keywords": [
     "google",
@@ -10,10 +10,10 @@
     "json",
     "cli"
   ],
-  "homepage": "https://bitbucket.org/interactivethings/spreadsheet-api",
+  "homepage": "https://github.com/interactivethings/spreadsheet-api",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/interactivethings/spreadsheet-api.git"
+    "url": "https://github.com/interactivethings/spreadsheet-api.git"
   },
   "bin": {
     "gsheets": "./bin/gsheets"
