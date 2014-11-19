@@ -8,7 +8,7 @@ var TEST_SPREADSHEET_KEY = '1dmAQO0zCQz5SNUKalw9NNXwTM6TgDBZ820Ftw-cz5gU'; // ne
 vows.describe('gsheets').addBatch({
   'Spreadsheet': {
     topic: function() {
-      gsheets.listWorksheets(TEST_SPREADSHEET_KEY, this.callback);
+      gsheets.getSpreadsheet(TEST_SPREADSHEET_KEY, this.callback);
     },
     'can be fetched': function(err, spreadsheet) {
       assert.isNull(err);
@@ -36,7 +36,7 @@ vows.describe('gsheets').addBatch({
   },
   'Non-existent Spreadsheet': {
     topic: function() {
-      gsheets.listWorksheets('xyz', this.callback);
+      gsheets.getSpreadsheet('xyz', this.callback);
     },
     'provides an error': function(err, spreadsheet) {
       assert.instanceOf(err, Error);

@@ -25,7 +25,7 @@ if (argv.id) {
 } else if (argv.title) {
   gs.getWorksheet(argv.key, argv.title, handleResponse);
 } else {
-  gs.listWorksheets(argv.key, handleResponse);
+  gs.getSpreadsheet(argv.key, handleResponse);
 }
 
 function handleResponse(err, res) {

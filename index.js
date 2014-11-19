@@ -70,6 +70,7 @@ function parseWorksheet(worksheet) {
 function parseSpreadsheetFeed(feed) {
   return {
     updated: getIn(feed, ['updated', '$t']),
+    title: getIn(feed, ['title', '$t']),
     worksheets: feed.entry ? feed.entry.map(parseWorksheet) : null
   };
 }
@@ -125,5 +126,5 @@ function parseCellsIntoRows(cells) {
 module.exports = {
   getWorksheet: fetchWorksheetByTitle,
   getWorksheetById: fetchWorksheetById,
-  listWorksheets: fetchSpreadsheet
+  getSpreadsheet: fetchSpreadsheet
 };

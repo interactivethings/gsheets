@@ -1,6 +1,6 @@
 # gsheets
 
-Get public Google Spreadsheets as plain JavaScript/JSON. Works in Node.js and on the Command Line.
+Get public Google Sheets as plain JavaScript/JSON. Works in Node.js and on the Command Line.
 
 ### Features
 
@@ -13,7 +13,7 @@ Get public Google Spreadsheets as plain JavaScript/JSON. Works in Node.js and on
 
 ### Non-features
 
-* Authorization
+* Authorization (only works with [published spreadsheets](https://support.google.com/docs/answer/37579?hl=en&ref_topic=2818999))
 * Querying, ordering, updating
 * Caching. Use a reverse proxy or implement your own caching strategy. I recommend this strongly since Google's API isn't the fastest and you don't want to hit rate limits.
 
@@ -39,12 +39,12 @@ There are a few libraries around which allow you to access Google Spreadsheets, 
 var gsheets = require('gsheets');
 ```
 
-#### listWorksheets(<i>spreadsheetKey</i>, <i>callback</i>)
+#### getSpreadsheet(<i>spreadsheetKey</i>, <i>callback</i>)
 
-Returns a list of worksheets contained in a spreadsheet.
+Returns information about a spreadsheet including a list of worksheets.
 
 ```js
-gsheets.listWorksheets('MY_KEY', function(err, res) {
+gsheets.getSpreadsheet('MY_KEY', function(err, res) {
   // ...
 });
 ```
@@ -54,6 +54,7 @@ Example Response:
 ```js
 {
   "updated": "2014-11-19T10:20:18.068Z",
+  "title": "My Awesome Spreadsheet",
   "worksheets": [
     {
       "id": "od6",
@@ -134,6 +135,16 @@ gsheets --key [--id] [--title] [--out] [--pretty]
   --title   Worksheet title; use either this or --id to get worksheet contents
   --pretty  Pretty-print JSON
 ```
+
+## Development
+
+Run the tests with
+
+```sh
+npm test
+```
+
+Have a look at the [test spreadsheet](https://docs.google.com/spreadsheets/d/1dmAQO0zCQz5SNUKalw9NNXwTM6TgDBZ820Ftw-cz5gU/edit#gid=257911996)
 
 ## Author
 
