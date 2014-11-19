@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+var rw = require('rw'),
+    minimist = require('minimist'),
+    gs = require('../index');
+
+var argv = minimist(process.argv.slice(2));
+
+if (!argv.out) {
+  argv.out = '/dev/stdout';
+}
+
+if (!argv.key) {
+  console.error("Please provide a spreadsheet key");
+  process.exit();
+}
+
+if (argv.id) {
+  gs.getWorksheet(argv.key, argv.id, handleResponse);
+} else if (argv.title) {
+  gs.getWorksheetByTitle(argv.key, argv.title, handleResponse);
+} else {
+  gs.listWorksheets(argv.key, handleResponse);
+}
+
+function handleResponse(err, res) {
+  if (err) {
+    console.error(err.message);
+    process.exit();
+  }
+  rw.writeFileSync(argv.out, argv.pretty ? JSON.stringify(res, null, 2) : JSON.stringify(res), 'utf8');    
+}
