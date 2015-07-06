@@ -25,9 +25,6 @@
   },
   "author": "Jeremy Stucki, Interactive Things",
   "license": "BSD",
-  "engines": {
-    "node": "0.10.x"
-  },
   "dependencies": {
     "axios": "^0.4.1",
     "minimist": "^1.1.0",
