@@ -152,15 +152,18 @@ Example Response:
 
 ## Command Line
 
-Write spreadsheet contents to a file as JSON.
+Write spreadsheet contents to a file as JSON or DSV.
 
 ```
-gsheets --key [--id] [--title] [--out] [--pretty]
+gsheets --key [--id] [--title] [--out] [--pretty] [--dsv]
   --key     Spreadsheet key; Outputs spreadsheet info if no other option is provided
   --out     Output file; defaults to /dev/stdout
   --id      Worksheet ID; use either this or --title to get worksheet contents
   --title   Worksheet title; use either this or --id to get worksheet contents
   --pretty  Pretty-print JSON
+  --dsv     Format as delimiter-separated values
+  --csv     Shortcut for --dsv=,
+  --tsv     Shortcut for --dsv=$'\t'
 ```
 
 ## Development

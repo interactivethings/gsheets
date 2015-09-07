@@ -2,7 +2,8 @@
 
 var rw = require('rw'),
     minimist = require('minimist'),
-    gs = require('../index');
+    gs = require('../index'),
+    dsv = require('d3-dsv').dsv;
 
 var argv = minimist(process.argv.slice(2));
 
@@ -33,5 +34,19 @@ function handleResponse(err, res) {
     console.error(err.message);
     process.exit();
   }
-  rw.writeFileSync(argv.out, argv.pretty ? JSON.stringify(res, null, 2) : JSON.stringify(res), 'utf8');    
+  var delimiter = argv.dsv;
+  if (argv.csv) {
+    delimiter = ',';
+  } else if (argv.tsv) {
+    delimiter = "\t";
+  }
+
+  var data;
+  if (delimiter) {
+    data = dsv(delimiter).format(res.data);
+  } else {
+    data = JSON.stringify(res, null, argv.pretty ? 2 : undefined);
+  }
+
+  rw.writeFileSync(argv.out, data, 'utf8');    
 }
