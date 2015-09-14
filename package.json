@@ -10,10 +10,10 @@
     "json",
     "cli"
   ],
-  "homepage": "https://github.com/interactivethings/spreadsheet-api",
+  "homepage": "https://github.com/interactivethings/gsheets",
   "repository": {
     "type": "git",
-    "url": "https://github.com/interactivethings/spreadsheet-api.git"
+    "url": "https://github.com/interactivethings/gsheets.git"
   },
   "bin": {
     "gsheets": "./bin/gsheets"
