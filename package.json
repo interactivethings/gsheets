@@ -21,7 +21,7 @@
   "main": "./index.js",
   "scripts": {
     "test": "vows --spec",
-    "build": "webpack index.js gsheets.js --output-library=gsheets --output-library-target=umd && webpack index.js gsheets.min.js -p --output-library=gsheets --output-library-target=umd"
+    "prepublish": "make dist"
   },
   "author": "Jeremy Stucki, Interactive Things",
   "license": "BSD-3-Clause",
