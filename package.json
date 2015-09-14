@@ -27,6 +27,7 @@
   "license": "BSD",
   "dependencies": {
     "axios": "^0.4.1",
+    "d3-dsv": "^0.1.5",
     "minimist": "^1.1.0",
     "rw": "^0.1.4"
   },
