@@ -24,15 +24,15 @@
     "build": "webpack index.js gsheets.js --output-library=gsheets --output-library-target=umd && webpack index.js gsheets.min.js -p --output-library=gsheets --output-library-target=umd"
   },
   "author": "Jeremy Stucki, Interactive Things",
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "dependencies": {
-    "axios": "^0.4.1",
+    "axios": "^0.5.4",
     "d3-dsv": "^0.1.5",
     "minimist": "^1.1.0",
     "rw": "^0.1.4"
   },
   "devDependencies": {
-    "vows": "~0.7.0",
-    "webpack": "^1.4.13"
+    "vows": "^0.8.1",
+    "webpack": "^1.12.1"
   }
 }
