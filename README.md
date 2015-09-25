@@ -99,7 +99,7 @@ Returns the contents of a worksheet, specified by its title. *Note* that this ge
 For empty worksheets `data` is `null`.
 
 ```js
-gsheets.getWorksheet('MY_KEY', 'foobar' function(err, res) {
+gsheets.getWorksheet('MY_KEY', 'foobar', function(err, res) {
   // ...
 });
 ```
@@ -128,7 +128,7 @@ Returns the contents of a worksheet, specified by its ID.
 For empty worksheets `data` is `null`.
 
 ```js
-gsheets.getWorksheetById('MY_KEY', 'od6' function(err, res) {
+gsheets.getWorksheetById('MY_KEY', 'od6', function(err, res) {
   // ...
 });
 ```
