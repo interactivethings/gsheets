@@ -2,11 +2,13 @@
 
 Get public Google Sheets as plain JavaScript/JSON.
 
+:point_right: [Try gsheets in your browser](https://runkit.com/npm/gsheets)
+
 ```sh
 npm install gsheets -g
 ```
 
-Works in Node.js
+Works in **Node.js**
 
 ```js
 var gsheets = require('gsheets');
@@ -16,7 +18,7 @@ gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', f
 });
 ```
 
-the browser (use the pre-built `gsheets.js` or `gsheets.min.js`)
+the **browser** (use the pre-built `gsheets.js` or `gsheets.min.js`)
 
 ```html
 <script src="../gsheets.js"></script>
@@ -27,7 +29,7 @@ the browser (use the pre-built `gsheets.js` or `gsheets.min.js`)
 </script>
 ```
 
-and on the Command Line.
+and on the **Command Line**.
 
 ```sh
 gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
@@ -60,7 +62,7 @@ There are a few libraries around which allow you to access Google Spreadsheets, 
 * Tabletop just logs errors to the console which makes proper error handling impossible
 * Incorrect handling of numeric cell values (you only get a *formatted* string instead of the actual number, e.g. `"123'456.79"` instead of `123456.789`)
 
-## Node API
+## API
 
 ```js
 var gsheets = require('gsheets');
