@@ -1,13 +1,13 @@
-// @flow
+//      
 
 var BASE_URL = 'https://spreadsheets.google.com/feeds/';
 
-type Callback<T> = (error: ?Error, result?: T) => any;
+                                                      
 
 // Utility functions
 
 // Get value from a nested structure or null.
-function getIn(o: Object, keys: Array<string>): any {
+function getIn(o        , keys               )      {
   var k = keys[0],
       ks = keys.slice(1);
   if (!o.hasOwnProperty(k)) return null;
@@ -16,11 +16,11 @@ function getIn(o: Object, keys: Array<string>): any {
 
 // Fetching
 
-function fetchData(params: Array<string>, callback: Callback<Object>): void {
+function fetchData(params               , callback                  )       {
   var url = BASE_URL + params.join('/') + '/public/values?alt=json';
   fetch(url)
     .then(response => response.json())
-    .then(data => {
+    .then((data) => {
       if (!data.feed) return callback(new Error('No feed was returned'));
       callback(null, data.feed);
     })
@@ -31,21 +31,21 @@ function fetchData(params: Array<string>, callback: Callback<Object>): void {
     });
 }
 
-function fetchSpreadsheet(key: string, callback: Callback<Object>) {
-  fetchData(['worksheets', key], function(err, feed: ?Object) {
+function fetchSpreadsheet(key        , callback                  ) {
+  fetchData(['worksheets', key], function(err, feed         ) {
     if (err) return callback(err);
     if (feed) callback(null, parseSpreadsheetFeed(feed));
   });
 }
 
-function fetchWorksheetById(key: string, worksheetId: string, callback: Callback<Object>) {
+function fetchWorksheetById(key        , worksheetId        , callback                  ) {
   fetchData(['cells', key, worksheetId], function(err, feed) {
     if (err) return callback(err);
     if (feed) callback(null, parseWorksheetFeed(feed));
   });
 }
 
-function fetchWorksheetByTitle(key: string, worksheetTitle: string, callback: Callback<Object>) {
+function fetchWorksheetByTitle(key        , worksheetTitle        , callback                  ) {
   fetchSpreadsheet(key, function(err, spreadsheet) {
     if (err) return callback(err);
     if (spreadsheet) {
@@ -58,20 +58,20 @@ function fetchWorksheetByTitle(key: string, worksheetTitle: string, callback: Ca
 
 // Parsing
 
-function parseWorksheetIdInSpreadsheetFeed(uri: string): ?string {
+function parseWorksheetIdInSpreadsheetFeed(uri        )          {
   var re = /.*\/(.+)$/,
       matches = re.exec(uri);
   return matches ? matches[1] : null;
 }
 
-function parseWorksheet(worksheet: Object) {
+function parseWorksheet(worksheet        ) {
   return {
     id: parseWorksheetIdInSpreadsheetFeed(getIn(worksheet, ['id', '$t'])),
     title: getIn(worksheet, ['title', '$t'])
   };
 }
 
-function parseSpreadsheetFeed(feed: Object) {
+function parseSpreadsheetFeed(feed        ) {
   return {
     updated: getIn(feed, ['updated', '$t']),
     title: getIn(feed, ['title', '$t']),
@@ -79,7 +79,7 @@ function parseSpreadsheetFeed(feed: Object) {
   };
 }
 
-function parseWorksheetFeed(feed: Object): {updated: string, title: string, data: ?Array<Object>} {
+function parseWorksheetFeed(feed        )                                                         {
   return {
     updated: getIn(feed, ['updated', '$t']),
     title: getIn(feed, ['title', '$t']),
@@ -87,7 +87,7 @@ function parseWorksheetFeed(feed: Object): {updated: string, title: string, data
   };
 }
 
-function getCellData(cell: Object): {col: number, row: number, value: string | number} {
+function getCellData(cell        )                                                     {
   var data = cell.gs$cell;
   return {
     col: +data.col,
@@ -103,7 +103,7 @@ function createRowFromHeaders(headers) {
   }, {});
 }
 
-function parseCellsIntoRows(cells: Array<Object>): Array<Object> {
+function parseCellsIntoRows(cells               )                {
   var cellsData = cells.map(getCellData),
       headerCells = cellsData.filter(function(d) { return d.row === 1; }),
       headers = headerCells.map(function(d) { return d.value; }),

@@ -1,6 +1,8 @@
 var vows = require('vows'),
     assert = require('assert'),
-    gsheets = require('../index');
+    gsheets = require('../gsheets');
+
+require('isomorphic-fetch');
 
 // var TEST_SPREADSHEET_KEY = '0Ah1wZzkSewdkdFljWjJUWm14TmkxTGZIaHdDTUEyeVE'; // old
 var TEST_SPREADSHEET_KEY = '1dmAQO0zCQz5SNUKalw9NNXwTM6TgDBZ820Ftw-cz5gU'; // new

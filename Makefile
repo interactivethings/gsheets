@@ -1,6 +1,9 @@
 .PHONY: test dist
 
-test:
+gsheets.js: index.js
+	$$(npm bin)/flow-remove-types $< > $@
+
+test: gsheets.js
 	npm test
 
 dist: dist/gsheets.js dist/gsheets.min.js

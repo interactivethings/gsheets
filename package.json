@@ -21,17 +21,20 @@
   "main": "./index.js",
   "scripts": {
     "test": "vows --spec",
-    "prepublish": "make dist"
+    "prepublish": "make dist",
+    "flow": "flow"
   },
   "author": "Jeremy Stucki, Interactive Things",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "axios": "^0.5.4",
     "d3-dsv": "^0.1.5",
     "minimist": "^1.1.0",
     "rw": "^0.1.4"
   },
   "devDependencies": {
+    "flow-bin": "^0.34.0",
+    "flow-remove-types": "^1.0.4",
+    "isomorphic-fetch": "^2.2.1",
     "vows": "^0.8.1",
     "webpack": "^1.12.1"
   }
