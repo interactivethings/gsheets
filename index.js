@@ -2,7 +2,7 @@
 
 var BASE_URL = 'https://spreadsheets.google.com/feeds/';
 
-type Callback<T> = (error: ?Error, result?: T) => any;
+type Feed = Object;
 
 // Utility functions
 
@@ -16,44 +16,43 @@ function getIn(o: Object, keys: Array<string>): any {
 
 // Fetching
 
-function fetchData(params: Array<string>, callback: Callback<Object>): void {
+function fetchFeed(params: Array<string>): Promise<*> {
   var url = BASE_URL + params.join('/') + '/public/values?alt=json';
-  fetch(url)
+  return fetch(url)
     .then(response => response.json())
-    .then(data => {
-      if (!data.feed) return callback(new Error('No feed was returned'));
-      callback(null, data.feed);
-    })
-    .catch(function(res) {
-      if (res instanceof Error) return callback(res);
-      // if (!res) return callback(new Error('No response.'));
-      return callback(new Error('Google Spreadsheets responded with HTTP error ' + res.status + '. Are you sure the spreadsheet exists and is published?'));
+    .then((data: {feed?: Feed}) => {
+      return new Promise((resolve, reject) => {
+        if (data.feed) {
+          resolve(data.feed);
+        } else {
+          reject(new Error('No feed was returned'));
+        }
+      });
     });
 }
 
-function fetchSpreadsheet(key: string, callback: Callback<Object>) {
-  fetchData(['worksheets', key], function(err, feed: ?Object) {
-    if (err) return callback(err);
-    if (feed) callback(null, parseSpreadsheetFeed(feed));
-  });
+function fetchSpreadsheet(key: string): Promise<*> {
+  return fetchFeed(['worksheets', key]).then(parseSpreadsheetFeed);
 }
 
-function fetchWorksheetById(key: string, worksheetId: string, callback: Callback<Object>) {
-  fetchData(['cells', key, worksheetId], function(err, feed) {
-    if (err) return callback(err);
-    if (feed) callback(null, parseWorksheetFeed(feed));
-  });
+function fetchWorksheetById(key: string, worksheetId: string): Promise<*> {
+  return fetchFeed(['cells', key, worksheetId]).then(parseWorksheetFeed);
 }
 
-function fetchWorksheetByTitle(key: string, worksheetTitle: string, callback: Callback<Object>) {
-  fetchSpreadsheet(key, function(err, spreadsheet) {
-    if (err) return callback(err);
-    if (spreadsheet) {
-      var worksheet = spreadsheet.worksheets.filter(function(d) { return d.title === worksheetTitle; })[0];
-      if (!worksheet) return callback(new Error('No worksheet with title \'' + worksheetTitle + '\' found.'));
-      fetchWorksheetById(key, worksheet.id, callback);
-    }
-  });
+function fetchWorksheetByTitle(key: string, worksheetTitle: string): Promise<*> {
+  return fetchSpreadsheet(key)
+    .then((spreadsheet: {worksheets: ?Array<Object>}) => {
+      return new Promise((resolve, reject) => {
+        const worksheet = spreadsheet.worksheets
+          ? spreadsheet.worksheets.find(d => d.title === worksheetTitle)
+          : null;
+        if (worksheet) {
+          resolve(fetchWorksheetById(key, worksheet.id));
+        } else {
+          reject(new Error('No worksheet with title \'' + worksheetTitle + '\' found.'));
+        }
+      });
+    });
 }
 
 // Parsing
@@ -71,7 +70,7 @@ function parseWorksheet(worksheet: Object) {
   };
 }
 
-function parseSpreadsheetFeed(feed: Object) {
+function parseSpreadsheetFeed(feed: Feed) {
   return {
     updated: getIn(feed, ['updated', '$t']),
     title: getIn(feed, ['title', '$t']),
