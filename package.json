@@ -28,6 +28,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "d3-dsv": "^0.1.5",
+    "isomorphic-fetch": "^2.2.1",
     "minimist": "^1.1.0",
     "rw": "^0.1.4"
   },
