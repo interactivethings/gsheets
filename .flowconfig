@@ -2,6 +2,7 @@
 .*/node_modules/flow-remove-types/test/.*
 
 [include]
+src
 
 [libs]
 
