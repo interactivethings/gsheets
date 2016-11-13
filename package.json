@@ -20,7 +20,8 @@
   },
   "main": "./lib/index.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "flow && jest",
+    "test-watch": "jest --watch",
     "prepublish": "make dist",
     "flow": "flow"
   },
