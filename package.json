@@ -22,7 +22,6 @@
   "scripts": {
     "test": "flow && jest",
     "test-watch": "jest --watch",
-    "prepublish": "make dist",
     "flow": "flow"
   },
   "author": "Jeremy Stucki, Interactive Things",
