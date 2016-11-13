@@ -3,7 +3,7 @@
 Get public Google Sheets as plain JavaScript/JSON.
 
 ```sh
-npm install gsheets -g
+npm install gsheets
 ```
 
 Works in Node.js
@@ -11,19 +11,19 @@ Works in Node.js
 ```js
 var gsheets = require('gsheets');
 
-gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', function(err, res) {
-  console.log(res);
-});
+gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
+  .then(res => console.log(res))
+  .catch(err => console.error(err));
 ```
 
 the browser (use the pre-built `gsheets.js` or `gsheets.min.js`)
 
 ```html
-<script src="../gsheets.js"></script>
+<script src="https://unpkg.com/gsheets/gsheets.min.js"></script>
 <script>
-  gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', function(err, res) {
-    console.log(res);
-  });
+  gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
+    .then(res => console.log(res))
+    .catch(err => console.error(err));
 </script>
 ```
 
@@ -32,6 +32,10 @@ and on the Command Line.
 ```sh
 gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
 ```
+
+#### Compatibility Note
+
+gsheets uses the [Fetch API](https://developer.mozilla.org/en/docs/Web/API/Fetch_API). Depending on your target, you'll need to polyfill `window.fetch` (e.g. using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)).
 
 ### Features
 
@@ -66,14 +70,13 @@ There are a few libraries around which allow you to access Google Spreadsheets, 
 var gsheets = require('gsheets');
 ```
 
-#### getSpreadsheet(<i>spreadsheetKey</i>, <i>callback</i>)
+#### getSpreadsheet(<i>spreadsheetKey</i>: string): Promise
 
 Returns information about a spreadsheet including a list of worksheets.
 
 ```js
-gsheets.getSpreadsheet('MY_KEY', function(err, res) {
-  // ...
-});
+gsheets.getSpreadsheet('MY_KEY')
+  .then(res => console.log(res));
 ```
 
 Example Response:
@@ -92,16 +95,15 @@ Example Response:
 }
 ```
 
-#### getWorksheet(<i>spreadsheetKey</i>, <i>worksheetTitle</i>, <i>callback</i>)
+#### getWorksheet(<i>spreadsheetKey</i>: string, <i>worksheetTitle</i>: string): Promise
 
 Returns the contents of a worksheet, specified by its title. *Note* that this generates two requests (to resolve a worksheet's title). If you know a worksheet's ID (e.g. via a previous call to `listWorksheets`), use `getWorksheetById`
 
 For empty worksheets `data` is `null`.
 
 ```js
-gsheets.getWorksheet('MY_KEY', 'foobar', function(err, res) {
-  // ...
-});
+gsheets.getWorksheet('MY_KEY', 'foobar')
+  .then(res => console.log(res));
 ```
 
 Example Response:
@@ -121,16 +123,15 @@ Example Response:
 }
 ```
 
-#### getWorksheetById(<i>spreadsheetKey</i>, <i>worksheetId</i>, <i>callback</i>)
+#### getWorksheetById(<i>spreadsheetKey</i>: string, <i>worksheetId</i>: string): Promise
 
 Returns the contents of a worksheet, specified by its ID.
 
 For empty worksheets `data` is `null`.
 
 ```js
-gsheets.getWorksheetById('MY_KEY', 'od6', function(err, res) {
-  // ...
-});
+gsheets.getWorksheetById('MY_KEY', 'od6')
+  .then(res => console.log(res));
 ```
 
 Example Response:
