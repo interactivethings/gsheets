@@ -1,3 +1,11 @@
+exports[`test Empty worksheet 1`] = `
+Object {
+  "data": null,
+  "title": "nothing",
+  "updated": "2014-11-19T10:20:18.068Z",
+}
+`;
+
 exports[`test Worksheet 1`] = `
 Object {
   "data": Array [

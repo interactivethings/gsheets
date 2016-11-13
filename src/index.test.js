@@ -16,3 +16,7 @@ test('Non-existent spreadsheet', () => getSpreadsheet('xyz').catch((err) => expe
 test('Worksheet', () => getWorksheet(TEST_SPREADSHEET_KEY, 'something').then((worksheet) => {
   expect(worksheet).toMatchSnapshot();
 }));
+
+test('Empty worksheet', () => getWorksheet(TEST_SPREADSHEET_KEY, 'nothing').then((worksheet) => {
+  expect(worksheet).toMatchSnapshot();
+}));
