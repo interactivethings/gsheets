@@ -18,7 +18,7 @@
   "bin": {
     "gsheets": "./bin/gsheets"
   },
-  "main": "./index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "jest --watch",
     "prepublish": "make dist",

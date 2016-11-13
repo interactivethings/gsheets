@@ -1,7 +1,7 @@
 .PHONY: test dist
 
-gsheets.js: src/index.js
-	$$(npm bin)/babel $< > $@
+lib: src
+	$$(npm bin)/babel $< --out-dir $@
 
 test:
 	npm test
