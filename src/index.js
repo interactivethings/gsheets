@@ -19,7 +19,8 @@ function getIn(o: Object, keys: Array<string>): any {
 function fetchFeed(params: Array<string>): Promise<*> {
   var url = BASE_URL + params.join('/') + '/public/values?alt=json';
   return fetch(url)
-    .then(response => response.json())
+    .then((response) => response.json())
+    .catch((err) => Promise.reject(new Error('Could not parse response. Make sure the spreadsheet does exist.')))
     .then((data: {feed?: Feed}) => {
       return new Promise((resolve, reject) => {
         if (data.feed) {

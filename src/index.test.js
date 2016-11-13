@@ -11,7 +11,10 @@ test('Spreadsheet', () => getSpreadsheet(TEST_SPREADSHEET_KEY).then((spreadsheet
   expect(spreadsheet.worksheets[1].title).toBe('something');
 }));
 
-test('Non-existent spreadsheet', () => getSpreadsheet('xyz').catch((err) => expect(err).toBeInstanceOf(Error)));
+test('Non-existent spreadsheet', () => getSpreadsheet('xyz').catch((err) => {
+  expect(err).toBeInstanceOf(Error);
+  expect(err.toString()).toBe('Error: Could not parse response. Make sure the spreadsheet does exist.');
+}));
 
 test('Worksheet', () => getWorksheet(TEST_SPREADSHEET_KEY, 'something').then((worksheet) => {
   expect(worksheet).toMatchSnapshot();

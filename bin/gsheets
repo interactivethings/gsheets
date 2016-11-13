@@ -32,7 +32,7 @@ if (argv.id) {
 }
 
 function handleError(err) {
-  console.error(err.message);
+  console.error(err.toString());
   process.exit(1);
 }
 
