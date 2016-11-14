@@ -45,7 +45,7 @@ function fetchWorksheetByTitle(key: string, worksheetTitle: string): Promise<*> 
     .then((spreadsheet: {worksheets: ?Array<Object>}) => {
       return new Promise((resolve, reject) => {
         const worksheet = spreadsheet.worksheets
-          ? spreadsheet.worksheets.find(d => d.title === worksheetTitle)
+          ? spreadsheet.worksheets.filter(d => d.title === worksheetTitle)[0]
           : null;
         if (worksheet) {
           resolve(fetchWorksheetById(key, worksheet.id));

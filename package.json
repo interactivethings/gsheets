@@ -27,9 +27,11 @@
   "scripts": {
     "test": "flow && jest",
     "test:watch": "jest --watch",
-    "build": "npm run test && npm run build:umd && npm run build:min",
-    "build:umd": "BABEL_ENV=rollup rollup src/index.js --config=rollup.config.js --output=gsheets.js",
-    "build:min": "NODE_ENV=production BABEL_ENV=rollup rollup src/index.js --config=rollup.config.js --output=gsheets.min.js",
+    "build": "npm run test && npm run build:umd && npm run build:min && npm run build:polyfill && npm run build:polyfill-min",
+    "build:umd": "BABEL_ENV=rollup rollup src/index.js -c -o gsheets.js",
+    "build:min": "NODE_ENV=production BABEL_ENV=rollup rollup src/index.js -c -o gsheets.min.js",
+    "build:polyfill": "BABEL_ENV=rollup rollup src/index.polyfill.js -c -o gsheets.polyfill.js",
+    "build:polyfill-min": "NODE_ENV=production BABEL_ENV=rollup rollup src/index.polyfill.js -c -o gsheets.polyfill.min.js",
     "shipit": "npm run build && scripts/publish"
   },
   "author": "Jeremy Stucki, Interactive Things",
@@ -46,10 +48,13 @@
     "babel-jest": "^17.0.0",
     "babel-plugin-transform-flow-strip-types": "^6.18.0",
     "babel-preset-latest": "^6.16.0",
+    "es6-promise": "^4.0.5",
     "flow-bin": "^0.35.0",
     "jest": "^17.0.0",
     "rollup": "^0.36.3",
     "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-commonjs": "^5.0.5",
+    "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-uglify": "^1.0.1"
   }
 }

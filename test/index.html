@@ -5,9 +5,11 @@
   <title>gsheets test</title>
 </head>
 <body>
-  <script src="../gsheets.js"></script>
+  <script src="../gsheets.polyfill.js"></script>
   <script>
-    gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar').then((res) => console.log(res))
+    gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
+      .then(function(res) {console.log(res)})
+      .catch(function(err) {console.error(err)})
   </script>
 </body>
 </html>

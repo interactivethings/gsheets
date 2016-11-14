@@ -2,24 +2,29 @@
 
 Get public Google Sheets as plain JavaScript/JSON.
 
-```sh
+## Usage
+
+### Node.js
+
+Node.js >= 4 is recommended.
+
+```
 npm install gsheets
 ```
 
-Works in Node.js
-
 ```js
-var gsheets = require('gsheets');
+require('isomorphic-fetch');
+const gsheets = require('gsheets');
 
 gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
   .then(res => console.log(res))
   .catch(err => console.error(err));
 ```
 
-the browser (use the pre-built `gsheets.js` or `gsheets.min.js`)
+### In the browser
 
 ```html
-<script src="https://unpkg.com/gsheets/gsheets.min.js"></script>
+<script src="https://unpkg.com/gsheets@next/gsheets.polyfill.min.js"></script>
 <script>
   gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
     .then(res => console.log(res))
@@ -27,17 +32,26 @@ the browser (use the pre-built `gsheets.js` or `gsheets.min.js`)
 </script>
 ```
 
-and on the Command Line.
+### On the Command Line
+
+```
+npm install gsheets -g
+```
 
 ```sh
 gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
 ```
 
-#### Compatibility Note
+### Compatibility Note
 
-gsheets uses the [Fetch API](https://developer.mozilla.org/en/docs/Web/API/Fetch_API). Depending on your target, you'll need to polyfill `window.fetch` (e.g. using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)).
+gsheets uses the [Fetch API](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) and [Promises](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise). Depending on your environment, you'll need to polyfill those. Recommendations:
 
-### Features
+- [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
+- [es6-promise](https://github.com/stefanpenner/es6-promise)
+
+For direct usage in the browser, there's a pre-built version of gsheets which the polyfills at [gsheets.polyfill.js](https://unpkg.com/gsheets@next/gsheets.polyfill.js) and [gsheets.polyfill.min.js](https://unpkg.com/gsheets@next/gsheets.polyfill.min.js).
+
+## Features
 
 * Plain JS/JSON data. No 'models'. Just use `.map`, `.filter` etc.
 * Correct handling of numeric cells (no formatted strings for numbers!)
@@ -46,17 +60,17 @@ gsheets uses the [Fetch API](https://developer.mozilla.org/en/docs/Web/API/Fetch
 * Empty rows are omitted
 * Correct handling of empty worksheets
 
-### Non-features
+## Non-features
 
 * Authorization (only works with [published spreadsheets](https://support.google.com/docs/answer/37579?hl=en&ref_topic=2818999))
 * Querying, ordering, updating
 * Caching. Use a reverse proxy or implement your own caching strategy. I recommend this strongly since Google's API isn't the fastest and you don't want to hit rate limits.
 
-### Caveats
+## Caveats
 
 * Beware of cells formatted as dates! Their values will be returned as Excel-style [DATEVALUE](http://office.microsoft.com/en-001/excel-help/datevalue-function-HP010062284.aspx) numbers (i.e. based on the number of *days* since January 1, 1900)
 
-### Why not use another library?
+## Why not use another library?
 
 There are a few libraries around which allow you to access Google Spreadsheets, most notably [Tabletop](https://github.com/jsoma/tabletop). However, they all have one or several drawbacks:
 
@@ -64,7 +78,7 @@ There are a few libraries around which allow you to access Google Spreadsheets, 
 * Tabletop just logs errors to the console which makes proper error handling impossible
 * Incorrect handling of numeric cell values (you only get a *formatted* string instead of the actual number, e.g. `"123'456.79"` instead of `123456.789`)
 
-## Node API
+## API
 
 ```js
 var gsheets = require('gsheets');
