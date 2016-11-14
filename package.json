@@ -21,7 +21,8 @@
   "main": "./gsheets.js",
   "files": [
     "gsheets.js",
-    "gsheets.min.js"
+    "gsheets.min.js",
+    "bin/gsheets"
   ],
   "scripts": {
     "test": "flow && jest",
