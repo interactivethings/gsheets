@@ -8,6 +8,8 @@ CLI_RESET="\033[0m"
 
 read -p "Enter a new version (current: $(node -p 'require("./package.json").version')): " new_version
 
+npm test
+
 if [ -n "$new_version" ]
 then
   npm version "$new_version"
@@ -29,6 +31,8 @@ then
 else
   tag="latest"
 fi
+
+npm run build
 
 npm publish --tag $tag
 

@@ -29,12 +29,12 @@
   "scripts": {
     "test": "flow && jest",
     "test:watch": "jest --watch",
-    "build": "npm run test && npm run build:umd && npm run build:min && npm run build:polyfill && npm run build:polyfill-min",
+    "build": "npm run build:umd && npm run build:min && npm run build:polyfill && npm run build:polyfill-min",
     "build:umd": "BABEL_ENV=rollup rollup src/index.js -c -o gsheets.js",
     "build:min": "NODE_ENV=production BABEL_ENV=rollup rollup src/index.js -c -o gsheets.min.js",
     "build:polyfill": "BABEL_ENV=rollup rollup src/index.polyfill.js -c -o gsheets.polyfill.js",
     "build:polyfill-min": "NODE_ENV=production BABEL_ENV=rollup rollup src/index.polyfill.js -c -o gsheets.polyfill.min.js",
-    "shipit": "npm run build && scripts/publish"
+    "shipit": "scripts/publish"
   },
   "author": "Jeremy Stucki, Interactive Things",
   "license": "BSD-3-Clause",
