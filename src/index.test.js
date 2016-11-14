@@ -13,7 +13,7 @@ test('Spreadsheet', () => getSpreadsheet(TEST_SPREADSHEET_KEY).then((spreadsheet
 
 test('Non-existent spreadsheet', () => getSpreadsheet('xyz').catch((err) => {
   expect(err).toBeInstanceOf(Error);
-  expect(err.toString()).toBe('Error: Could not parse response. Make sure the spreadsheet does exist.');
+  expect(err.toString()).toBe('Error: The spreadsheet doesn´t exist or isn´t public.');
 }));
 
 test('Worksheet', () => getWorksheet(TEST_SPREADSHEET_KEY, 'something').then((worksheet) => {

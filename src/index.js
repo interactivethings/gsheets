@@ -19,8 +19,12 @@ function getIn(o: Object, keys: Array<string>): any {
 function fetchFeed(params: Array<string>): Promise<*> {
   var url = BASE_URL + params.join('/') + '/public/values?alt=json';
   return fetch(url)
-    .then((response) => response.json())
-    .catch((err) => Promise.reject(new Error('Could not parse response. Make sure the spreadsheet does exist.')))
+    .then((response) => {
+      if (!response.ok) {
+        return Promise.reject(new Error('The spreadsheet doesn´t exist or isn´t public.'))
+      }
+      return response.json()
+    })
     .then((data: {feed?: Feed}) => {
       return new Promise((resolve, reject) => {
         if (data.feed) {
