@@ -127,8 +127,6 @@ function parseCellsIntoRows(cells: Array<Object>): Array<Object> {
 
 // Public API
 
-module.exports = {
-  getWorksheet: fetchWorksheetByTitle,
-  getWorksheetById: fetchWorksheetById,
-  getSpreadsheet: fetchSpreadsheet
-};
+export const getWorksheet = fetchWorksheetByTitle;
+export const getWorksheetById = fetchWorksheetById;
+export const getSpreadsheet = fetchSpreadsheet;

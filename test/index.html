@@ -7,9 +7,7 @@
 <body>
   <script src="../gsheets.js"></script>
   <script>
-    gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', function(err, res) {
-      console.log(res);
-    });
+    gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar').then((res) => console.log(res))
   </script>
 </body>
 </html>

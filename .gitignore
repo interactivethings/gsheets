@@ -42,3 +42,6 @@ node_modules
 # Dist
 dist
 lib
+
+/gsheets.js
+/gsheets.min.js

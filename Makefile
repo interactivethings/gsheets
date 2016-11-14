@@ -8,11 +8,11 @@ test:
 
 dist: dist/gsheets.js dist/gsheets.min.js
 
-dist/gsheets.js: src/index.js node_modules
-	node_modules/.bin/webpack $< $@ --output-library=gsheets --output-library-target=umd
+gsheets.js: src/index.js
+	BABEL_ENV=rollup $$(npm bin)/rollup $< --config=rollup.config.js --output=$@
 
-dist/gsheets.min.js: src/index.js node_modules
-	node_modules/.bin/webpack $< $@ -p --output-library=gsheets --output-library-target=umd
+gsheets.min.js: src/index.js
+	NODE_ENV=production BABEL_ENV=rollup $$(npm bin)/rollup $< --config=rollup.config.js --output=$@
 
 node_modules: package.json
 	npm install --ignore-scripts

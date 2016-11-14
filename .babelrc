@@ -1,4 +1,13 @@
 {
   "plugins": ["transform-flow-strip-types"],
-  "presets": ["latest"]
+  "env": {
+    "rollup": {
+      "presets": [["latest", {
+        "es2015": {"modules": false}
+      }]]
+    },
+    "test": {
+      "presets": ["latest"]
+    }
+  }
 }
