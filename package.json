@@ -22,6 +22,8 @@
   "files": [
     "gsheets.js",
     "gsheets.min.js",
+    "gsheets.polyfill.js",
+    "gsheets.polyfill.min.js",
     "bin/gsheets"
   ],
   "scripts": {
