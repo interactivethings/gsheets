@@ -172,10 +172,15 @@ gsheets --key [--id] [--title] [--out] [--pretty] [--dsv]
 Run the tests with
 
 ```sh
-npm test
+npm run test:watch
 ```
 
 Have a look at the [test spreadsheet](https://docs.google.com/spreadsheets/d/1dmAQO0zCQz5SNUKalw9NNXwTM6TgDBZ820Ftw-cz5gU/edit#gid=257911996)
+
+Publish a new version with
+```
+npm run shipit
+```
 
 ## Author
 

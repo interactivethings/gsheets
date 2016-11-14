@@ -30,7 +30,7 @@
     "build": "npm run test && npm run build:umd && npm run build:min",
     "build:umd": "BABEL_ENV=rollup rollup src/index.js --config=rollup.config.js --output=gsheets.js",
     "build:min": "NODE_ENV=production BABEL_ENV=rollup rollup src/index.js --config=rollup.config.js --output=gsheets.min.js",
-    "publish": "npm run build && scripts/publish"
+    "shipit": "npm run build && scripts/publish"
   },
   "author": "Jeremy Stucki, Interactive Things",
   "license": "BSD-3-Clause",
