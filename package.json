@@ -18,7 +18,11 @@
   "bin": {
     "gsheets": "./bin/gsheets"
   },
-  "main": "./lib/index.js",
+  "main": "./gsheets.js",
+  "files": [
+    "gsheets.js",
+    "gsheets.min.js"
+  ],
   "scripts": {
     "test": "flow && jest",
     "test-watch": "jest --watch",

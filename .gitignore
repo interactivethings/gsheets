@@ -1,47 +1,4 @@
-# https://github.com/github/gitignore/blob/master/Global/OSX.gitignore
 .DS_Store
-.AppleDouble
-.LSOverride
-
-# Icon must ends with two \r.
-Icon
-
-
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
-
-# https://github.com/github/gitignore/blob/master/Node.gitignore
-lib-cov
-lcov.info
-*.seed
-*.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
-
-pids
-logs
-results
-build
-.grunt
-
 node_modules
-
-# Heroku
-.env
-
-# IntelliJ project files
-.idea
-
-# Dist
-dist
-lib
-
-/gsheets.js
-/gsheets.min.js
+/gsheets*.js
+*.log

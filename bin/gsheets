@@ -4,7 +4,7 @@ require('isomorphic-fetch');
 
 var rw = require('rw'),
     minimist = require('minimist'),
-    gs = require('../lib/index'),
+    gs = require('../gsheets'),
     dsv = require('d3-dsv').dsv;
 
 var argv = minimist(process.argv.slice(2));
