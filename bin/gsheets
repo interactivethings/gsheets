@@ -5,7 +5,7 @@ require('isomorphic-fetch');
 var rw = require('rw'),
     minimist = require('minimist'),
     gs = require('../gsheets'),
-    dsv = require('d3-dsv').dsv;
+    dsvFormat = require('d3-dsv').dsvFormat;
 
 var argv = minimist(process.argv.slice(2));
 
@@ -46,7 +46,7 @@ function handleResponse(res) {
 
   var data;
   if (delimiter) {
-    data = dsv(delimiter).format(res.data);
+    data = dsvFormat(delimiter).format(res.data);
   } else {
     data = JSON.stringify(res, null, argv.pretty ? 2 : undefined);
   }
