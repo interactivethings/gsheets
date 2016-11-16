@@ -1,23 +1,54 @@
 // @flow
 
-var BASE_URL = 'https://spreadsheets.google.com/feeds/';
+const BASE_URL = 'https://spreadsheets.google.com/feeds/';
 
-type Feed = Object;
+type GSFeed = Object;
 
-// Utility functions
+type GSSpreadsheetFeed = {
+  updated: {$t: string};
+  title: {$t: string};
+  entry: Array<GSSpreadsheetWorksheet>
+};
 
-// Get value from a nested structure or null.
-function getIn(o: Object, keys: Array<string>): any {
-  var k = keys[0],
-      ks = keys.slice(1);
-  if (!o.hasOwnProperty(k)) return null;
-  return ks.length ? getIn(o[k], ks) : o[k];
-}
+type GSSpreadsheetWorksheet = {
+  id: {$t: string};
+  title: {$t: string};
+  // Other things we don't need
+};
+
+type GSWorksheetFeed = {
+  updated: {$t: string};
+  title: {$t: string};
+  entry?: Array<GSCell>; // Missing if worksheet is empty
+};
+
+type GSCell = {
+  gs$cell: {row: string, col: string, $t: string, numericValue?: string}
+};
+
+type SpreadsheetWorksheet = {
+  id: string;
+  title: string;
+};
+
+type Spreadsheet = {
+  updated: string;
+  title: string;
+  worksheets: Array<SpreadsheetWorksheet>;
+};
+
+type Row = {[key: string]: number | string | null};
+
+type Worksheet = {
+  updated: string;
+  title: string;
+  data: Array<Row>;
+};
 
 // Fetching
 
-function fetchFeed(params: Array<string>): Promise<*> {
-  var url = BASE_URL + params.join('/') + '/public/values?alt=json';
+function fetchFeed(params: Array<string>): Promise<GSFeed> {
+  const url = BASE_URL + params.join('/') + '/public/values?alt=json';
   return fetch(url)
     .then((response) => {
       if (!response.ok) {
@@ -25,7 +56,7 @@ function fetchFeed(params: Array<string>): Promise<*> {
       }
       return response.json()
     })
-    .then((data: {feed?: Feed}) => {
+    .then((data: {feed?: GSFeed}) => {
       return new Promise((resolve, reject) => {
         if (data.feed) {
           resolve(data.feed);
@@ -36,17 +67,17 @@ function fetchFeed(params: Array<string>): Promise<*> {
     });
 }
 
-function fetchSpreadsheet(key: string): Promise<*> {
+function fetchSpreadsheet(key: string): Promise<Spreadsheet> {
   return fetchFeed(['worksheets', key]).then(parseSpreadsheetFeed);
 }
 
-function fetchWorksheetById(key: string, worksheetId: string): Promise<*> {
+function fetchWorksheetById(key: string, worksheetId: string): Promise<Worksheet> {
   return fetchFeed(['cells', key, worksheetId]).then(parseWorksheetFeed);
 }
 
-function fetchWorksheetByTitle(key: string, worksheetTitle: string): Promise<*> {
+function fetchWorksheetByTitle(key: string, worksheetTitle: string): Promise<Worksheet> {
   return fetchSpreadsheet(key)
-    .then((spreadsheet: {worksheets: ?Array<Object>}) => {
+    .then((spreadsheet: Spreadsheet) => {
       return new Promise((resolve, reject) => {
         const worksheet = spreadsheet.worksheets
           ? spreadsheet.worksheets.filter(d => d.title === worksheetTitle)[0]
@@ -62,37 +93,37 @@ function fetchWorksheetByTitle(key: string, worksheetTitle: string): Promise<*> 
 
 // Parsing
 
-function parseWorksheetIdInSpreadsheetFeed(uri: string): ?string {
-  var re = /.*\/(.+)$/,
-      matches = re.exec(uri);
-  return matches ? matches[1] : null;
+function parseWorksheetIdInSpreadsheetFeed(uri: string): string {
+  const re = /.*\/(.+)$/;
+  const matches = re.exec(uri);
+  return matches[1];
 }
 
-function parseWorksheet(worksheet: Object) {
+function parseWorksheet(worksheet: GSSpreadsheetWorksheet): SpreadsheetWorksheet {
   return {
-    id: parseWorksheetIdInSpreadsheetFeed(getIn(worksheet, ['id', '$t'])),
-    title: getIn(worksheet, ['title', '$t'])
+    id: parseWorksheetIdInSpreadsheetFeed(worksheet.id.$t),
+    title: worksheet.title.$t
   };
 }
 
-function parseSpreadsheetFeed(feed: Feed) {
+function parseSpreadsheetFeed(feed: GSSpreadsheetFeed): Spreadsheet {
   return {
-    updated: getIn(feed, ['updated', '$t']),
-    title: getIn(feed, ['title', '$t']),
-    worksheets: feed.entry ? feed.entry.map(parseWorksheet) : null
+    updated: feed.updated.$t,
+    title: feed.title.$t,
+    worksheets: feed.entry.map(parseWorksheet)
   };
 }
 
-function parseWorksheetFeed(feed: Object): {updated: string, title: string, data: ?Array<Object>} {
+function parseWorksheetFeed(feed: GSWorksheetFeed): Worksheet {
   return {
-    updated: getIn(feed, ['updated', '$t']),
-    title: getIn(feed, ['title', '$t']),
-    data: feed.entry ? parseCellsIntoRows(feed.entry) : null
+    updated: feed.updated.$t,
+    title: feed.title.$t,
+    data: feed.entry ? parseCellsIntoRows(feed.entry) : []
   };
 }
 
-function getCellData(cell: Object): {col: number, row: number, value: string | number} {
-  var data = cell.gs$cell;
+function getCellData(cell: GSCell): {col: number, row: number, value: string | number} {
+  const data = cell.gs$cell;
   return {
     col: +data.col,
     row: +data.row,
@@ -100,33 +131,33 @@ function getCellData(cell: Object): {col: number, row: number, value: string | n
   };
 }
 
-function createRowFromHeaders(headers) {
+function createRowFromHeaders(headers: Array<string>): Row {
   return headers.reduce(function(row, key) {
     row[key] = null;
     return row;
   }, {});
 }
 
-function parseCellsIntoRows(cells: Array<Object>): Array<Object> {
-  var cellsData = cells.map(getCellData),
-      headerCells = cellsData.filter(function(d) { return d.row === 1; }),
-      headers = headerCells.map(function(d) { return d.value; }),
-      headersByCol = headerCells.reduce(function(byCol, d) {
-        byCol[d.col] = d.value;
-        return byCol;
-      }, {}),
-      bodyCells = cellsData.filter(function(d) { return d.row !== 1; }),
-      bodyByRow = bodyCells.reduce(function(byRow, d) {
-        var row = byRow[d.row] || createRowFromHeaders(headers),
-            key = headersByCol[d.col];
-        row[key] = d.value;
-        byRow[d.row] = row;
-        return byRow;
-      }, {});
+function parseCellsIntoRows(cells: Array<GSCell>): Array<Row> {
+  const cellsData = cells.map(getCellData);
+  const headerCells = cellsData.filter(d => d.row === 1);
+  const headers = headerCells.map(d => `${d.value}`);
+  const headersByCol = headerCells.reduce((byCol, d) => {
+    byCol[d.col] = d.value;
+    return byCol;
+  }, {});
+  const bodyCells = cellsData.filter(function(d) { return d.row !== 1; });
+  const bodyByRow = bodyCells.reduce(function(byRow, d) {
+    const row = byRow[d.row] || createRowFromHeaders(headers);
+    const key = headersByCol[d.col];
+    row[key] = d.value;
+    byRow[d.row] = row;
+    return byRow;
+  }, {});
 
   return Object.keys(bodyByRow)
-    .sort(function(a, b) { return +a - +b; })
-    .map(function(row) { return bodyByRow[row]; });
+    .sort((a, b) => +a - +b)
+    .map(row => bodyByRow[row]);
 }
 
 // Public API

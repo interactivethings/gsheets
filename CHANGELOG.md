@@ -19,6 +19,8 @@ gheets.getWorksheet('ABC', 'xyz')
   .then(result => {}, error => {});
 ```
 
+Also, empty worksheets now contain an empty array as `data` instead of `null`.
+
 ### Internal changes
 
 - Type checking with [Flow](https://flowtype.org/)

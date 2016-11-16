@@ -140,7 +140,7 @@ Example Response:
 
 Returns the contents of a worksheet, specified by its ID.
 
-For empty worksheets `data` is `null`.
+For empty worksheets `data` is `[]`.
 
 ```js
 gsheets.getWorksheetById('MY_KEY', 'od6')
