@@ -17,8 +17,7 @@ require('isomorphic-fetch');
 const gsheets = require('gsheets');
 
 gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
-  .then(res => console.log(res))
-  .catch(err => console.error(err));
+  .then(res => console.log(res), err => console.error(err));
 ```
 
 ### In the browser
@@ -27,8 +26,8 @@ gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
 <script src="https://unpkg.com/gsheets@next/gsheets.polyfill.min.js"></script>
 <script>
   gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
-    .then(res => console.log(res))
-    .catch(err => console.error(err));
+    .then(res => console.log(res), err => console.error(err));
+
 </script>
 ```
 

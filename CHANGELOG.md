@@ -16,8 +16,7 @@ Now:
 
 ```js
 gheets.getWorksheet('ABC', 'xyz')
-  .then(result => {})
-  .catch(error => {});
+  .then(result => {}, error => {});
 ```
 
 ### Internal changes
