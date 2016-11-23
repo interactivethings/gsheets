@@ -2,11 +2,13 @@
 
 Get public Google Sheets as plain JavaScript/JSON.
 
+:point_right: [Try gsheets in your browser](https://runkit.com/npm/gsheets)
+
 ## Usage
 
 ### Node.js
 
-Node.js >= 4 is recommended.
+Node.js >= 4 is required.
 
 ```
 npm install gsheets
