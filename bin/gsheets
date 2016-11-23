@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
+require('isomorphic-fetch');
+
 var rw = require('rw'),
     minimist = require('minimist'),
-    gs = require('../index'),
-    dsv = require('d3-dsv').dsv;
+    gs = require('../gsheets'),
+    dsvFormat = require('d3-dsv').dsvFormat;
 
 var argv = minimist(process.argv.slice(2));
 
@@ -13,27 +15,28 @@ if (!argv.out) {
 
 if (!argv.key) {
   console.error("Please provide a spreadsheet key");
-  process.exit();
+  process.exit(1);
 }
 
 if (argv.id && argv.title) {
   console.error("Please use only --title OR --id");
-  process.exit();
+  process.exit(1);
 }
 
 if (argv.id) {
-  gs.getWorksheetById(argv.key, argv.id, handleResponse);
+  gs.getWorksheetById(argv.key, argv.id).then(handleResponse).catch(handleError);
 } else if (argv.title) {
-  gs.getWorksheet(argv.key, argv.title, handleResponse);
+  gs.getWorksheet(argv.key, argv.title).then(handleResponse).catch(handleError);
 } else {
-  gs.getSpreadsheet(argv.key, handleResponse);
+  gs.getSpreadsheet(argv.key).then(handleResponse).catch(handleError);
 }
 
-function handleResponse(err, res) {
-  if (err) {
-    console.error(err.message);
-    process.exit();
-  }
+function handleError(err) {
+  console.error(err.toString());
+  process.exit(1);
+}
+
+function handleResponse(res) {
   var delimiter = argv.dsv;
   if (argv.csv) {
     delimiter = ',';
@@ -43,10 +46,10 @@ function handleResponse(err, res) {
 
   var data;
   if (delimiter) {
-    data = dsv(delimiter).format(res.data);
+    data = dsvFormat(delimiter).format(res.data);
   } else {
     data = JSON.stringify(res, null, argv.pretty ? 2 : undefined);
   }
 
-  rw.writeFileSync(argv.out, data, 'utf8');    
+  rw.writeFileSync(argv.out, data, 'utf8');
 }

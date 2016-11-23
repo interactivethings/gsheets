@@ -1,6 +1,6 @@
 {
   "name": "gsheets",
-  "version": "1.2.3",
+  "version": "2.0.0-beta.1",
   "description": "Get public Google Spreadsheets as plain JavaScript/JSON",
   "keywords": [
     "google",
@@ -18,21 +18,45 @@
   "bin": {
     "gsheets": "./bin/gsheets"
   },
-  "main": "./index.js",
+  "main": "./gsheets.js",
+  "files": [
+    "gsheets.js",
+    "gsheets.min.js",
+    "gsheets.polyfill.js",
+    "gsheets.polyfill.min.js",
+    "bin/gsheets"
+  ],
   "scripts": {
-    "test": "vows --spec",
-    "prepublish": "make dist"
+    "test": "flow && jest",
+    "test:watch": "jest --watch",
+    "build": "npm run build:umd && npm run build:min && npm run build:polyfill && npm run build:polyfill-min",
+    "build:umd": "BABEL_ENV=rollup rollup src/index.js -c -o gsheets.js",
+    "build:min": "NODE_ENV=production BABEL_ENV=rollup rollup src/index.js -c -o gsheets.min.js",
+    "build:polyfill": "BABEL_ENV=rollup rollup src/index.polyfill.js -c -o gsheets.polyfill.js",
+    "build:polyfill-min": "NODE_ENV=production BABEL_ENV=rollup rollup src/index.polyfill.js -c -o gsheets.polyfill.min.js",
+    "shipit": "scripts/publish"
   },
   "author": "Jeremy Stucki, Interactive Things",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "axios": "^0.5.4",
-    "d3-dsv": "^0.1.5",
+    "d3-dsv": "^1.0.3",
+    "isomorphic-fetch": "^2.2.1",
     "minimist": "^1.1.0",
-    "rw": "^0.1.4"
+    "rw": "^1.3.2"
   },
   "devDependencies": {
-    "vows": "^0.8.1",
-    "webpack": "^1.12.1"
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-jest": "^17.0.2",
+    "babel-plugin-transform-flow-strip-types": "^6.18.0",
+    "babel-preset-latest": "^6.16.0",
+    "es6-promise": "^4.0.5",
+    "flow-bin": "^0.35.0",
+    "jest": "^17.0.2",
+    "rollup": "^0.36.3",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-commonjs": "^5.0.5",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-uglify": "^1.0.1"
   }
 }

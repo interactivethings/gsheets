@@ -4,38 +4,55 @@ Get public Google Sheets as plain JavaScript/JSON.
 
 :point_right: [Try gsheets in your browser](https://runkit.com/npm/gsheets)
 
-```sh
-npm install gsheets -g
-```
+## Usage
 
-Works in **Node.js**
+### Node.js
+
+Node.js >= 4 is required.
+
+```
+npm install gsheets
+```
 
 ```js
-var gsheets = require('gsheets');
+require('isomorphic-fetch');
+const gsheets = require('gsheets');
 
-gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', function(err, res) {
-  console.log(res);
-});
+gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
+  .then(res => console.log(res), err => console.error(err));
 ```
 
-the **browser** (use the pre-built `gsheets.js` or `gsheets.min.js`)
+### In the browser
 
 ```html
-<script src="../gsheets.js"></script>
+<script src="https://unpkg.com/gsheets@next/gsheets.polyfill.min.js"></script>
 <script>
-  gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar', function(err, res) {
-    console.log(res);
-  });
+  gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
+    .then(res => console.log(res), err => console.error(err));
+
 </script>
 ```
 
-and on the **Command Line**.
+### On the Command Line
+
+```
+npm install gsheets -g
+```
 
 ```sh
 gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
 ```
 
-### Features
+### Compatibility Note
+
+gsheets uses the [Fetch API](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) and [Promises](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise). Depending on your environment, you'll need to polyfill those. Recommendations:
+
+- [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
+- [es6-promise](https://github.com/stefanpenner/es6-promise)
+
+For direct usage in the browser, there's a pre-built version of gsheets which the polyfills at [gsheets.polyfill.js](https://unpkg.com/gsheets@next/gsheets.polyfill.js) and [gsheets.polyfill.min.js](https://unpkg.com/gsheets@next/gsheets.polyfill.min.js).
+
+## Features
 
 * Plain JS/JSON data. No 'models'. Just use `.map`, `.filter` etc.
 * Correct handling of numeric cells (no formatted strings for numbers!)
@@ -44,17 +61,17 @@ gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pret
 * Empty rows are omitted
 * Correct handling of empty worksheets
 
-### Non-features
+## Non-features
 
 * Authorization (only works with [published spreadsheets](https://support.google.com/docs/answer/37579?hl=en&ref_topic=2818999))
 * Querying, ordering, updating
 * Caching. Use a reverse proxy or implement your own caching strategy. I recommend this strongly since Google's API isn't the fastest and you don't want to hit rate limits.
 
-### Caveats
+## Caveats
 
 * Beware of cells formatted as dates! Their values will be returned as Excel-style [DATEVALUE](http://office.microsoft.com/en-001/excel-help/datevalue-function-HP010062284.aspx) numbers (i.e. based on the number of *days* since January 1, 1900)
 
-### Why not use another library?
+## Why not use another library?
 
 There are a few libraries around which allow you to access Google Spreadsheets, most notably [Tabletop](https://github.com/jsoma/tabletop). However, they all have one or several drawbacks:
 
@@ -68,14 +85,13 @@ There are a few libraries around which allow you to access Google Spreadsheets, 
 var gsheets = require('gsheets');
 ```
 
-#### getSpreadsheet(<i>spreadsheetKey</i>, <i>callback</i>)
+#### getSpreadsheet(<i>spreadsheetKey</i>: string): Promise
 
 Returns information about a spreadsheet including a list of worksheets.
 
 ```js
-gsheets.getSpreadsheet('MY_KEY', function(err, res) {
-  // ...
-});
+gsheets.getSpreadsheet('MY_KEY')
+  .then(res => console.log(res));
 ```
 
 Example Response:
@@ -94,16 +110,15 @@ Example Response:
 }
 ```
 
-#### getWorksheet(<i>spreadsheetKey</i>, <i>worksheetTitle</i>, <i>callback</i>)
+#### getWorksheet(<i>spreadsheetKey</i>: string, <i>worksheetTitle</i>: string): Promise
 
 Returns the contents of a worksheet, specified by its title. *Note* that this generates two requests (to resolve a worksheet's title). If you know a worksheet's ID (e.g. via a previous call to `listWorksheets`), use `getWorksheetById`
 
 For empty worksheets `data` is `null`.
 
 ```js
-gsheets.getWorksheet('MY_KEY', 'foobar', function(err, res) {
-  // ...
-});
+gsheets.getWorksheet('MY_KEY', 'foobar')
+  .then(res => console.log(res));
 ```
 
 Example Response:
@@ -123,16 +138,15 @@ Example Response:
 }
 ```
 
-#### getWorksheetById(<i>spreadsheetKey</i>, <i>worksheetId</i>, <i>callback</i>)
+#### getWorksheetById(<i>spreadsheetKey</i>: string, <i>worksheetId</i>: string): Promise
 
 Returns the contents of a worksheet, specified by its ID.
 
-For empty worksheets `data` is `null`.
+For empty worksheets `data` is `[]`.
 
 ```js
-gsheets.getWorksheetById('MY_KEY', 'od6', function(err, res) {
-  // ...
-});
+gsheets.getWorksheetById('MY_KEY', 'od6')
+  .then(res => console.log(res));
 ```
 
 Example Response:
@@ -173,10 +187,15 @@ gsheets --key [--id] [--title] [--out] [--pretty] [--dsv]
 Run the tests with
 
 ```sh
-npm test
+npm run test:watch
 ```
 
 Have a look at the [test spreadsheet](https://docs.google.com/spreadsheets/d/1dmAQO0zCQz5SNUKalw9NNXwTM6TgDBZ820Ftw-cz5gU/edit#gid=257911996)
+
+Publish a new version with
+```
+npm run shipit
+```
 
 ## Author
 
