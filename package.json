@@ -1,6 +1,6 @@
 {
   "name": "gsheets",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0",
   "description": "Get public Google Spreadsheets as plain JavaScript/JSON",
   "keywords": [
     "google",
