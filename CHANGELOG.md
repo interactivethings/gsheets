@@ -11,7 +11,7 @@ The new API does not return any meaningful metadata of the spreadsheets and allo
 Now:
 
 ```js
-gheets.getWorksheet('spreadsheetId', 'apiKey', 'worksheetTitle')
+gheets.getWorksheet('SPREADSHEET_ID', 'WORKSHEET_TITLE', 'YOUR_API_KEY')
 ```
 
 
