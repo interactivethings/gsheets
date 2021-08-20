@@ -18,7 +18,7 @@ npm install gsheets
 require('isomorphic-fetch');
 const gsheets = require('gsheets');
 
-gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
+gsheets.getWorksheet('SPREADSHEET_ID', 'WORKSHEET_TITLE', 'YOUR_API_KEY')
   .then(res => console.log(res), err => console.error(err));
 ```
 
@@ -27,7 +27,7 @@ gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
 ```html
 <script src="https://unpkg.com/gsheets@next/gsheets.polyfill.min.js"></script>
 <script>
-  gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
+  gsheets.getWorksheet('SPREADSHEET_ID', 'WORKSHEET_TITLE', 'YOUR_API_KEY')
     .then(res => console.log(res), err => console.error(err));
 
 </script>
@@ -40,7 +40,7 @@ npm install gsheets -g
 ```
 
 ```sh
-gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
+gsheets --id=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --key=YOUR_API_KEY
 ```
 
 ### Compatibility Note
@@ -85,67 +85,14 @@ There are a few libraries around which allow you to access Google Spreadsheets, 
 var gsheets = require('gsheets');
 ```
 
-#### getSpreadsheet(<i>spreadsheetKey</i>: string): Promise
-
-Returns information about a spreadsheet including a list of worksheets.
-
-```js
-gsheets.getSpreadsheet('MY_KEY')
-  .then(res => console.log(res));
-```
-
-Example Response:
-
-```js
-{
-  "updated": "2014-11-19T10:20:18.068Z",
-  "title": "My Awesome Spreadsheet",
-  "worksheets": [
-    {
-      "id": "od6",
-      "title": "foobar"
-    },
-    // more worksheets ...
-  ]
-}
-```
-
 #### getWorksheet(<i>spreadsheetKey</i>: string, <i>worksheetTitle</i>: string): Promise
 
-Returns the contents of a worksheet, specified by its title. *Note* that this generates two requests (to resolve a worksheet's title). If you know a worksheet's ID (e.g. via a previous call to `listWorksheets`), use `getWorksheetById`
-
-For empty worksheets `data` is `null`.
-
-```js
-gsheets.getWorksheet('MY_KEY', 'foobar')
-  .then(res => console.log(res));
-```
-
-Example Response:
-
-```js
-{
-  "updated": "2014-11-19T10:20:18.068Z",
-  "title": "foobar",
-  "data": [
-    {
-      "foo": "bar",
-      "baz": 42,
-      "boing": null
-    },
-    // more rows ...
-  ]
-}
-```
-
-#### getWorksheetById(<i>spreadsheetKey</i>: string, <i>worksheetId</i>: string): Promise
-
-Returns the contents of a worksheet, specified by its ID.
+Returns the contents of a worksheet, specified by its title.
 
 For empty worksheets `data` is `[]`.
 
 ```js
-gsheets.getWorksheetById('MY_KEY', 'od6')
+gsheets.getWorksheet('SPREADSHEET_ID', 'WORKSHEET_TITLE', 'YOUR_API_KEY')
   .then(res => console.log(res));
 ```
 
@@ -153,8 +100,6 @@ Example Response:
 
 ```js
 {
-  "updated": "2014-11-19T10:20:18.068Z",
-  "title": "foobar",
   "data": [
     {
       "foo": "bar",
@@ -171,10 +116,12 @@ Example Response:
 Write spreadsheet contents to a file as JSON or DSV.
 
 ```
-gsheets --key [--id] [--title] [--out] [--pretty] [--dsv]
-  --key     Spreadsheet key; Outputs spreadsheet info if no other option is provided
+gsheets --id --title --apiKey [--out] [--pretty] [--dsv]
+  --id      Spreadsheet Id, required
+  --title   Worksheet ID, required
+  --key     Google API key, required
+
   --out     Output file; defaults to /dev/stdout
-  --id      Worksheet ID; use either this or --title to get worksheet contents
   --title   Worksheet title; use either this or --id to get worksheet contents
   --pretty  Pretty-print JSON
   --dsv     Format as delimiter-separated values

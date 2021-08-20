@@ -13,23 +13,23 @@ if (!argv.out) {
   argv.out = '/dev/stdout';
 }
 
+if (!argv.id) {
+  console.error("Please provide a spreadsheet id");
+  process.exit(1);
+}
+
+if (!argv.title) {
+  console.error("Please provide a worksheet title");
+  process.exit(1);
+}
+
 if (!argv.key) {
-  console.error("Please provide a spreadsheet key");
+  console.error("Please provide a API key");
   process.exit(1);
 }
 
-if (argv.id && argv.title) {
-  console.error("Please use only --title OR --id");
-  process.exit(1);
-}
 
-if (argv.id) {
-  gs.getWorksheetById(argv.key, argv.id).then(handleResponse).catch(handleError);
-} else if (argv.title) {
-  gs.getWorksheet(argv.key, argv.title).then(handleResponse).catch(handleError);
-} else {
-  gs.getSpreadsheet(argv.key).then(handleResponse).catch(handleError);
-}
+gs.getWorksheet(argv.id, argv.title. argv.key).then(handleResponse).catch(handleError);
 
 function handleError(err) {
   console.error(err.toString());
