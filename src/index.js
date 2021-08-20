@@ -28,11 +28,11 @@ function fetchFeed(key, title, apiKey) {
 
 function fetchWorksheetByTitle(key, title) {
   return new Promise((resolve, reject) => {
-    if (process.env.API_KEY) {
-      const data = fetchFeed(key, title, process.env.API_KEY).then(parseWorksheet)
+    if (process.env.GOOGLE_SHEETS_API_KEY) {
+      const data = fetchFeed(key, title, process.env.GOOGLE_SHEETS_API_KEY).then(parseWorksheet)
       resolve(data);
     } else {
-      reject(new Error("API_KEY in .env required"));
+      reject(new Error("GOOGLE_SHEETS_API_KEY in .env required"));
     }
   });
 }

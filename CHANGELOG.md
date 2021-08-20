@@ -4,7 +4,7 @@
 
 ### Breaking
 
-Due to google shutting down the previous spreadsheet API, gsheets 3.0.0 now uses the [official sheets API v4](https://developers.google.com/sheets/api/reference/rest), which requires an **API_KEY**. You may provide it via the environment or a `.env` file when using the CLI.
+Due to google shutting down the previous spreadsheet API, gsheets 3.0.0 now uses the [official sheets API v4](https://developers.google.com/sheets/api/reference/rest), which requires an **GOOGLE_SHEETS_API_KEY**. You may provide it via the environment or a `.env` file when using the CLI.
 
 The new API does not return any meaningful metadata of the spreadsheets and allows for direct query of a worksheet by it's title. Thus the methods gsheets.getWorksheetById and gsheets.getSpreadsheets have been removed.
 
