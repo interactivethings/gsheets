@@ -7,7 +7,7 @@
 <body>
   <script src="../gsheets.polyfill.js"></script>
   <script>
-    gsheets.getWorksheet('SPREADSHEET_ID', 'WORKSHEET_TITLE', 'YOUR_API_KEY')
+    gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
       .then(function(res) {console.log(res)})
       .catch(function(err) {console.error(err)})
   </script>

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 require('isomorphic-fetch');
+require('dotenv').config();
 
 var rw = require('rw'),
     minimist = require('minimist'),
@@ -23,13 +24,13 @@ if (!argv.title) {
   process.exit(1);
 }
 
-if (!argv.key) {
-  console.error("Please provide a API key");
+if (!process.env.API_KEY) {
+  console.error("Please provide a API_KEY variable in your .env file");
   process.exit(1);
 }
 
 
-gs.getWorksheet(argv.id, argv.title. argv.key).then(handleResponse).catch(handleError);
+gs.getWorksheet(argv.id, argv.title, process.env.API_KEY).then(handleResponse).catch(handleError);
 
 function handleError(err) {
   console.error(err.toString());

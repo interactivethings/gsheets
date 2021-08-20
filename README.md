@@ -18,7 +18,7 @@ npm install gsheets
 require('isomorphic-fetch');
 const gsheets = require('gsheets');
 
-gsheets.getWorksheet('SPREADSHEET_ID', 'WORKSHEET_TITLE', 'YOUR_API_KEY')
+gheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
   .then(res => console.log(res), err => console.error(err));
 ```
 
@@ -27,7 +27,7 @@ gsheets.getWorksheet('SPREADSHEET_ID', 'WORKSHEET_TITLE', 'YOUR_API_KEY')
 ```html
 <script src="https://unpkg.com/gsheets@next/gsheets.polyfill.min.js"></script>
 <script>
-  gsheets.getWorksheet('SPREADSHEET_ID', 'WORKSHEET_TITLE', 'YOUR_API_KEY')
+  gheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
     .then(res => console.log(res), err => console.error(err));
 
 </script>
@@ -40,7 +40,7 @@ npm install gsheets -g
 ```
 
 ```sh
-gsheets --id=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --key=YOUR_API_KEY
+gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar
 ```
 
 ### Compatibility Note
@@ -92,7 +92,7 @@ Returns the contents of a worksheet, specified by its title.
 For empty worksheets `data` is `[]`.
 
 ```js
-gsheets.getWorksheet('SPREADSHEET_ID', 'WORKSHEET_TITLE', 'YOUR_API_KEY')
+gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
   .then(res => console.log(res));
 ```
 
@@ -116,10 +116,9 @@ Example Response:
 Write spreadsheet contents to a file as JSON or DSV.
 
 ```
-gsheets --id --title --apiKey [--out] [--pretty] [--dsv]
-  --id      Spreadsheet Id, required
+gsheets --id --title [--out] [--pretty] [--dsv]
+  --key      Spreadsheet Key, required
   --title   Worksheet ID, required
-  --key     Google API key, required
 
   --out     Output file; defaults to /dev/stdout
   --title   Worksheet title; use either this or --id to get worksheet contents

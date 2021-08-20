@@ -4,14 +4,14 @@
 
 ### Breaking
 
-Due to google sunsetting the previous docs API, gsheets 3.0.0 now uses the official sheets API v4, which requires an **API Key**.
+Due to google sunsetting the previous docs API, gsheets 3.0.0 now uses the official sheets API v4, which requires an **API_KEY** in your .env file.
 
 The new API does not return any meaningful metadata of the spreadsheets and allows for direct query of a worksheet by it's title. Thus the methods gsheets.getWorksheetById and gsheets.getSpreadsheets have been removed.
 
 Now:
 
 ```js
-gheets.getWorksheet('SPREADSHEET_ID', 'WORKSHEET_TITLE', 'YOUR_API_KEY')
+gheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
 ```
 
 
