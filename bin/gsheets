@@ -24,14 +24,14 @@ if (!argv.title) {
   process.exit(1);
 }
 
-if (!process.env.GOOGLE_SHEETS_API_KEY) {
+if (!process.env.GSHEETS_API_KEY) {
   console.error(
-    "Please provide a GOOGLE_SHEETS_API_KEY variable in your .env file"
+    "Please provide a GSHEETS_API_KEY variable in your .env file"
   );
   process.exit(1);
 }
 
-gs.getWorksheet(argv.id, argv.title, process.env.GOOGLE_SHEETS_API_KEY)
+gs.getWorksheet(argv.id, argv.title, process.env.GSHEETS_API_KEY)
   .then(handleResponse)
   .catch(handleError);
 

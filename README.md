@@ -18,7 +18,7 @@ npm install gsheets
 require('isomorphic-fetch');
 const gsheets = require('gsheets');
 
-gheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
+gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
   .then(res => console.log(res), err => console.error(err));
 ```
 
@@ -27,7 +27,7 @@ gheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
 ```html
 <script src="https://unpkg.com/gsheets@next/gsheets.polyfill.min.js"></script>
 <script>
-  gheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
+  gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
     .then(res => console.log(res), err => console.error(err));
 
 </script>
@@ -117,12 +117,10 @@ Write spreadsheet contents to a file as JSON or DSV.
 
 ```
 gsheets --id --title [--out] [--pretty] [--dsv]
-  --key      Spreadsheet Key, required
-  --title   Worksheet ID, required
+  --key     Spreadsheet Key, required
+  --title   Worksheet title, required
 
   --out     Output file; defaults to /dev/stdout
-  --title   Worksheet title; use either this or --id to get worksheet contents
-  --pretty  Pretty-print JSON
   --dsv     Format as delimiter-separated values
   --csv     Shortcut for --dsv=,
   --tsv     Shortcut for --dsv=$'\t'

@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const BASE_URL = "https://sheets.googleapis.com/v4/spreadsheets";
 
 // Fetching
@@ -28,11 +26,11 @@ function fetchFeed(key, title, apiKey) {
 
 function fetchWorksheetByTitle(key, title) {
   return new Promise((resolve, reject) => {
-    if (process.env.GOOGLE_SHEETS_API_KEY) {
-      const data = fetchFeed(key, title, process.env.GOOGLE_SHEETS_API_KEY).then(parseWorksheet)
+    if (process.env.GSHEETS_API_KEY) {
+      const data = fetchFeed(key, title, process.env.GSHEETS_API_KEY).then(parseWorksheet)
       resolve(data);
     } else {
-      reject(new Error("GOOGLE_SHEETS_API_KEY in .env required"));
+      reject(new Error("GSHEETS_API_KEY in .env required"));
     }
   });
 }
