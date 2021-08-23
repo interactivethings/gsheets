@@ -14,6 +14,7 @@ Now:
 gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
 ```
 
+Due to the **GSHEETS_API_KEY** requirement, using this library client-side has become obsolete. V3 removes the build steps which create gsheets.polyfill.js files.
 
 ## 2.0.0
 

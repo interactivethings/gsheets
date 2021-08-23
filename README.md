@@ -8,7 +8,7 @@ Get public Google Sheets as plain JavaScript/JSON.
 
 ### Node.js
 
-Node.js >= 4 is required.
+Node.js >= 10 is required.
 
 ```
 npm install gsheets
@@ -20,17 +20,6 @@ const gsheets = require('gsheets');
 
 gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
   .then(res => console.log(res), err => console.error(err));
-```
-
-### In the browser
-
-```html
-<script src="https://unpkg.com/gsheets@next/gsheets.polyfill.min.js"></script>
-<script>
-  gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
-    .then(res => console.log(res), err => console.error(err));
-
-</script>
 ```
 
 ### In the Command Line
@@ -45,12 +34,9 @@ gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pret
 
 ### Compatibility Note
 
-gsheets uses the [Fetch API](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) and [Promises](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise). Depending on your environment, you'll need to polyfill those. Recommendations:
+gsheets uses the [Fetch API](https://developer.mozilla.org/en/docs/Web/API/Fetch_API). Depending on your environment, you'll need to polyfill this. Recommendations:
 
 - [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
-- [es6-promise](https://github.com/stefanpenner/es6-promise)
-
-For direct usage in the browser, there's a pre-built version of gsheets which the polyfills at [gsheets.polyfill.js](https://unpkg.com/gsheets@next/gsheets.polyfill.js) and [gsheets.polyfill.min.js](https://unpkg.com/gsheets@next/gsheets.polyfill.min.js).
 
 ## Features
 
