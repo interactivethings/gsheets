@@ -40,7 +40,7 @@ npm install gsheets -g
 ```
 
 ```sh
-gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar
+gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
 ```
 
 ### Compatibility Note
@@ -116,8 +116,8 @@ Example Response:
 Write spreadsheet contents to a file as JSON or DSV.
 
 ```
-gsheets --id --title [--out] [--pretty] [--dsv]
-  --key     Spreadsheet Key, required
+gsheets --key --title [--out] [--pretty] [--dsv]
+  --key     Spreadsheet Key (ID), required
   --title   Worksheet title, required
 
   --out     Output file; defaults to /dev/stdout
