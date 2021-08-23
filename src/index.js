@@ -18,7 +18,7 @@ function fetchFeed(key, title, apiKey) {
         if (data.values) {
           resolve(data.values);
         } else {
-          reject(new Error("No feed was returned"));
+          reject(new Error("No spreadsheet was returned"));
         }
       });
     });
@@ -30,7 +30,7 @@ function fetchWorksheetByTitle(key, title) {
       const data = fetchFeed(key, title, process.env.GSHEETS_API_KEY).then(parseWorksheet)
       resolve(data);
     } else {
-      reject(new Error("GSHEETS_API_KEY in .env required"));
+      reject(new Error("no process.env.GSHEETS_API_KEY provided"));
     }
   });
 }
