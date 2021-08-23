@@ -33,7 +33,7 @@ gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
 </script>
 ```
 
-### On the Command Line
+### In the Command Line
 
 ```
 npm install gsheets -g
@@ -57,15 +57,8 @@ For direct usage in the browser, there's a pre-built version of gsheets which th
 * Plain JS/JSON data. No 'models'. Just use `.map`, `.filter` etc.
 * Correct handling of numeric cells (no formatted strings for numbers!)
 * Empty cells are converted to `null`
-* A bit of metadata (i.e. when a spreadsheet was updated)
-* Empty rows are omitted
-* Correct handling of empty worksheets
-
-## Non-features
-
-* Authorization (only works with [published spreadsheets](https://support.google.com/docs/answer/37579?hl=en&ref_topic=2818999))
-* Querying, ordering, updating
-* Caching. Use a reverse proxy or implement your own caching strategy. I recommend this strongly since Google's API isn't the fastest and you don't want to hit rate limits.
+* Empty rows and empty columns are omitted
+* Empty worksheets returns an object with an empty data array: `{data: []}`
 
 ## Caveats
 
