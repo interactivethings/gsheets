@@ -8,7 +8,7 @@ Get public Google Sheets as plain JavaScript/JSON.
 
 ### Node.js
 
-Node.js >= 10 is required.
+Node.js >= 13.2 is required.
 
 ```
 npm install gsheets

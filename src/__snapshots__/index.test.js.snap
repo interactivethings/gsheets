@@ -1,3 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Empty worksheet 1`] = `
+Object {
+  "data": Array [],
+}
+`;
+
+exports[`Worksheet 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "id": 1,
+      "name": "foo",
+      "should": "number id; string name; null value",
+      "väl-ue": null,
+    },
+    Object {
+      "id": 2,
+      "name": " ",
+      "should": "number id; string name (it's a single space!); number value",
+      "väl-ue": 123456.789,
+    },
+    Object {
+      "id": 3,
+      "name": "baz",
+      "should": "number id; string name; null value",
+      "väl-ue": 0.000001,
+    },
+    Object {
+      "id": 0,
+      "name": "null",
+      "should": "number id; string name; string value",
+      "väl-ue": "1+2",
+    },
+    Object {
+      "id": "4",
+      "name": "money",
+      "should": "string id; string name; numeric value",
+      "väl-ue": 12.3,
+    },
+  ],
+}
+`;
+
 exports[`test Empty worksheet 1`] = `
 Object {
   "data": Array [],
@@ -16,7 +61,7 @@ Object {
     Object {
       "id": 2,
       "name": " ",
-      "should": "number id; string name (it\'s a single space!); number value",
+      "should": "number id; string name (it's a single space!); number value",
       "väl-ue": 123456.789,
     },
     Object {
