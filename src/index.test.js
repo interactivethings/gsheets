@@ -1,4 +1,5 @@
 require("isomorphic-fetch");
+require("dotenv").config();
 const { getWorksheet } = require("./index");
 
 const TEST_SPREADSHEET_KEY = "1dmAQO0zCQz5SNUKalw9NNXwTM6TgDBZ820Ftw-cz5gU"; // new
