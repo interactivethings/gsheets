@@ -15,8 +15,8 @@ function fetchFeed(key, title, apiKey) {
     })
     .then((data) => {
       return new Promise((resolve, reject) => {
-        if (data.values) {
-          resolve(data.values);
+        if (data) {
+          resolve(data);
         } else {
           reject(new Error("No spreadsheet was returned"));
         }
@@ -39,7 +39,14 @@ function fetchWorksheetByTitle(key, title) {
 
 // Parsing
 
-function parseWorksheet(worksheetArrayOfRows) {
+function parseWorksheet(data) {
+  const worksheetArrayOfRows = data.values
+  // return empty if worksheet is empty
+  if (!worksheetArrayOfRows) {
+    return {
+      data: [],
+    };
+  }
   const keys = worksheetArrayOfRows[0];
   // BACKCOMPAT: get indexes of empty columns
   const emptyColumnIndexes = keys.reduce(function (a, e, i) {

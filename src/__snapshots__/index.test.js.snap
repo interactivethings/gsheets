@@ -1,8 +1,6 @@
 exports[`test Empty worksheet 1`] = `
 Object {
   "data": Array [],
-  "title": "nothing",
-  "updated": "2014-11-19T10:20:18.068Z",
 }
 `;
 
@@ -40,7 +38,5 @@ Object {
       "väl-ue": 12.3,
     },
   ],
-  "title": "something",
-  "updated": "2014-11-19T10:20:18.068Z",
 }
 `;
