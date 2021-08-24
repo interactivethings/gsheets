@@ -24,7 +24,7 @@ function fetchFeed(key, title, apiKey) {
     });
 }
 
-function fetchWorksheetByTitle(key, title) {
+module.exports = function getWorksheet(key, title) {
   return new Promise((resolve, reject) => {
     if (process.env.GSHEETS_API_KEY) {
       const data = fetchFeed(key, title, process.env.GSHEETS_API_KEY).then(
@@ -75,6 +75,3 @@ function parseWorksheet(data) {
   };
 }
 
-// Public API
-
-export const getWorksheet = fetchWorksheetByTitle;
