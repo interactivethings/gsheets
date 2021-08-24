@@ -11,7 +11,13 @@
     "cli"
   ],
   "homepage": "https://github.com/interactivethings/gsheets",
-  "author": "Jeremy Stucki - Interactive Things, Olivier Baumann - Republik Magazin",
+  "author": "Jeremy Stucki - Interactive Things",
+  "contributors": [
+    {
+      "name": "Olivier Baumann",
+      "email": "olivier.baumann@republik.ch"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/interactivethings/gsheets.git"
