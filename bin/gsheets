@@ -5,7 +5,7 @@ require("dotenv").config();
 
 var rw = require("rw"),
   minimist = require("minimist"),
-  gs = require("../src"),
+  getWorksheet = require("../src"),
   dsvFormat = require("d3-dsv").dsvFormat;
 
 var argv = minimist(process.argv.slice(2));
@@ -25,13 +25,11 @@ if (!argv.title) {
 }
 
 if (!process.env.GSHEETS_API_KEY) {
-  console.error(
-    "Please provide a GSHEETS_API_KEY variable in your .env file"
-  );
+  console.error("Please provide a GSHEETS_API_KEY variable in your .env file");
   process.exit(1);
 }
 
-gs.getWorksheet(argv.id, argv.title, process.env.GSHEETS_API_KEY)
+getWorksheet(argv.id, argv.title, process.env.GSHEETS_API_KEY)
   .then(handleResponse)
   .catch(handleError);
 
