@@ -19,9 +19,9 @@
   "bin": {
     "gsheets": "./bin/gsheets"
   },
-  "main": "./src",
+  "main": "src/index.js",
   "files": [
-    "./src",
+    "src/index.js",
     "bin/gsheets"
   ],
   "scripts": {
