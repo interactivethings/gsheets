@@ -29,7 +29,7 @@ if (!process.env.GSHEETS_API_KEY) {
   process.exit(1);
 }
 
-getWorksheet(argv.id, argv.title, process.env.GSHEETS_API_KEY)
+getWorksheet(argv.key, argv.title, process.env.GSHEETS_API_KEY)
   .then(handleResponse)
   .catch(handleError);
 
