@@ -32,8 +32,6 @@ else
   tag="latest"
 fi
 
-npm run build
-
 npm publish --tag $tag
 
 echo -e "$CLI_SUCCESS Published version \"$version\" with tag \"$tag\" to npm$CLI_RESET"

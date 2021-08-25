@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 
-require('isomorphic-fetch');
+require("isomorphic-fetch");
+require("dotenv").config();
 
-var rw = require('rw'),
-    minimist = require('minimist'),
-    gs = require('../gsheets'),
-    dsvFormat = require('d3-dsv').dsvFormat;
+var rw = require("rw"),
+  minimist = require("minimist"),
+  { getWorksheet } = require("../src"),
+  dsvFormat = require("d3-dsv").dsvFormat;
 
 var argv = minimist(process.argv.slice(2));
 
 if (!argv.out) {
-  argv.out = '/dev/stdout';
+  argv.out = "/dev/stdout";
 }
 
 if (!argv.key) {
@@ -18,18 +19,19 @@ if (!argv.key) {
   process.exit(1);
 }
 
-if (argv.id && argv.title) {
-  console.error("Please use only --title OR --id");
+if (!argv.title) {
+  console.error("Please provide a worksheet title");
   process.exit(1);
 }
 
-if (argv.id) {
-  gs.getWorksheetById(argv.key, argv.id).then(handleResponse).catch(handleError);
-} else if (argv.title) {
-  gs.getWorksheet(argv.key, argv.title).then(handleResponse).catch(handleError);
-} else {
-  gs.getSpreadsheet(argv.key).then(handleResponse).catch(handleError);
+if (!process.env.GSHEETS_API_KEY) {
+  console.error("Please provide a GSHEETS_API_KEY variable in your .env file");
+  process.exit(1);
 }
+
+getWorksheet(argv.key, argv.title, process.env.GSHEETS_API_KEY)
+  .then(handleResponse)
+  .catch(handleError);
 
 function handleError(err) {
   console.error(err.toString());
@@ -39,7 +41,7 @@ function handleError(err) {
 function handleResponse(res) {
   var delimiter = argv.dsv;
   if (argv.csv) {
-    delimiter = ',';
+    delimiter = ",";
   } else if (argv.tsv) {
     delimiter = "\t";
   }
@@ -51,5 +53,5 @@ function handleResponse(res) {
     data = JSON.stringify(res, null, argv.pretty ? 2 : undefined);
   }
 
-  rw.writeFileSync(argv.out, data, 'utf8');
+  rw.writeFileSync(argv.out, data, "utf8");
 }
