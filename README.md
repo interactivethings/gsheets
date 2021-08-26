@@ -38,20 +38,20 @@ gsheets --key --title [--apiKey] [--out] [--pretty] [--dsv]
 Supports providing the apiKey via arg:
 
 ```sh
-npx gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --apiKey=GSHEETS_API_KEY --pretty
+npx gsheets --key=SPREADSHEETID --title=foobar --apiKey=GSHEETS_API_KEY --pretty
 ```
 
 or via env:
 
 ```sh
-npx GSHEETS_API_KEY=xyz gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
+npx GSHEETS_API_KEY=xyz gsheets --key=SPREADSHEETID --title=foobar --pretty
 ```
 
-### Compatibility Note
+if you are using dotenv in your project, you can specify GSHEETS_API_KEY as a var in your .env file and run:
 
-gsheets uses the [Fetch API](https://developer.mozilla.org/en/docs/Web/API/Fetch_API). Depending on your environment, you'll need to polyfill this. Recommendations:
-
-- [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
+```sh
+NODE_OPTIONS='-r dotenv/config' gsheets --key=SPREADSHEETID--title=foobar --pretty
+```
 
 ## Features
 
@@ -79,14 +79,14 @@ There are a few libraries around which allow you to access Google Spreadsheets, 
 var gsheets = require('gsheets');
 ```
 
-#### getWorksheet(<i>spreadsheetKey</i>: string, <i>worksheetTitle</i>: string): Promise
+#### getWorksheet(<i>spreadsheetKey</i>: string, <i>worksheetTitle</i>: string, , <i>gsheetsApiKey</i>: string): Promise
 
 Returns the contents of a worksheet, specified by its title.
 
 For empty worksheets `data` is `[]`.
 
 ```js
-gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
+gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE', 'GSHEETS_API_KEY')
   .then(res => console.log(res));
 ```
 
@@ -107,7 +107,7 @@ Example Response:
 
 ## Development
 
-Run the tests with
+Replace "YOUR_GSHEETS_API_KEY" in index.tests.js with your key, then run the tests with:
 
 ```sh
 npm run test:watch
