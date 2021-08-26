@@ -6,6 +6,10 @@ Get public Google Sheets as plain JavaScript/JSON.
 
 ## Usage
 
+### Google Sheets Api Key
+
+Starting with version 3.0.0, gsheets uses the official Google Sheets API v4, which requires an API key. To get an API key [follow these instructions](https://developers.google.com/sheets/api/guides/authorizing#APIKey).
+
 ### Node.js
 
 Node.js >= 12 is required.
