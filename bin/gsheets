@@ -1,13 +1,11 @@
 #!/usr/bin/env node
 
-require("isomorphic-fetch");
-require("dotenv").config();
-
 var rw = require("rw"),
   minimist = require("minimist"),
   { getWorksheet } = require("../src"),
   dsvFormat = require("d3-dsv").dsvFormat;
 
+var defaultApiKey = process.env.GSHEETS_API_KEY  
 var argv = minimist(process.argv.slice(2));
 
 if (!argv.out) {
@@ -24,12 +22,12 @@ if (!argv.title) {
   process.exit(1);
 }
 
-if (!process.env.GSHEETS_API_KEY) {
-  console.error("Please provide a GSHEETS_API_KEY variable in your .env file");
+if (!argv.apiKey && !defaultApiKey) {
+  console.error("No api key provided. Provide it via the apiKey argument or with a GSHEETS_API_KEY var via your environment.");
   process.exit(1);
 }
 
-getWorksheet(argv.key, argv.title, process.env.GSHEETS_API_KEY)
+getWorksheet(argv.key, argv.title, defaultApiKey || argv.apiKey)
   .then(handleResponse)
   .catch(handleError);
 
