@@ -31,16 +31,15 @@
     "bin/gsheets"
   ],
   "scripts": {
-    "test": "flow && jest",
+    "test": "jest",
     "test:watch": "jest --watch",
     "shipit": "scripts/publish"
   },
   "license": "BSD-3-Clause",
   "dependencies": {
     "d3-dsv": "^1.0.3",
-    "dotenv": "^10.0.0",
-    "isomorphic-fetch": "^2.2.1",
     "minimist": "^1.1.0",
+    "node-fetch": "^2.6.1",
     "rw": "^1.3.2"
   },
   "devDependencies": {

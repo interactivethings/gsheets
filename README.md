@@ -8,28 +8,43 @@ Get public Google Sheets as plain JavaScript/JSON.
 
 ### Node.js
 
-Node.js >= 13.2 is required.
+Node.js >= 12 is required.
 
 ```
 npm install gsheets
 ```
 
 ```js
-require('isomorphic-fetch');
 const gsheets = require('gsheets');
 
-gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE')
+gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE', 'GSHEETS_API_KEY')
   .then(res => console.log(res), err => console.error(err));
 ```
 
 ### In the Command Line
 
 ```
-npm install gsheets -g
+gsheets --key --title [--apiKey] [--out] [--pretty] [--dsv]
+  --key     Spreadsheet Key (ID), required
+  --title   Worksheet title, required
+
+  --apiKey  Google Sheets v4 API key, 
+  --out     Output file; defaults to /dev/stdout
+  --dsv     Format as delimiter-separated values
+  --csv     Shortcut for --dsv=,
+  --tsv     Shortcut for --dsv=$'\t'
 ```
 
+Supports providing the apiKey via arg:
+
 ```sh
-gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
+npx gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --apiKey=GSHEETS_API_KEY --pretty
+```
+
+or via env:
+
+```sh
+npx GSHEETS_API_KEY=xyz gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
 ```
 
 ### Compatibility Note
@@ -88,21 +103,6 @@ Example Response:
     // more rows ...
   ]
 }
-```
-
-## Command Line
-
-Write spreadsheet contents to a file as JSON or DSV.
-
-```
-gsheets --key --title [--out] [--pretty] [--dsv]
-  --key     Spreadsheet Key (ID), required
-  --title   Worksheet title, required
-
-  --out     Output file; defaults to /dev/stdout
-  --dsv     Format as delimiter-separated values
-  --csv     Shortcut for --dsv=,
-  --tsv     Shortcut for --dsv=$'\t'
 ```
 
 ## Development
