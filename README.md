@@ -6,66 +6,64 @@ Get public Google Sheets as plain JavaScript/JSON.
 
 ## Usage
 
+### Google Sheets Api Key
+
+Starting with version 3.0.0, gsheets uses the official Google Sheets API v4, which requires an API key. To get an API key [follow these instructions](https://developers.google.com/sheets/api/guides/authorizing#APIKey).
+
 ### Node.js
 
-Node.js >= 4 is required.
+Node.js >= 12 is required.
 
 ```
 npm install gsheets
 ```
 
 ```js
-require('isomorphic-fetch');
 const gsheets = require('gsheets');
 
-gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
+gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE', 'GSHEETS_API_KEY')
   .then(res => console.log(res), err => console.error(err));
 ```
 
-### In the browser
-
-```html
-<script src="https://unpkg.com/gsheets@next/gsheets.polyfill.min.js"></script>
-<script>
-  gsheets.getWorksheet('1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs', 'foobar')
-    .then(res => console.log(res), err => console.error(err));
-
-</script>
-```
-
-### On the Command Line
+### In the Command Line
 
 ```
-npm install gsheets -g
+gsheets --key --title [--apiKey] [--out] [--pretty] [--dsv]
+  --key     Spreadsheet Key (ID), required
+  --title   Worksheet title, required
+
+  --apiKey  Google Sheets v4 API key, 
+  --out     Output file; defaults to /dev/stdout
+  --dsv     Format as delimiter-separated values
+  --csv     Shortcut for --dsv=,
+  --tsv     Shortcut for --dsv=$'\t'
 ```
+
+Supports providing the apiKey via arg:
 
 ```sh
-gsheets --key=1iOqNjB-mI15ZLly_9lqn1hCa6MinqPc_71RoKVyCFZs --title=foobar --pretty
+npx gsheets --key=SPREADSHEETID --title=foobar --apiKey=GSHEETS_API_KEY --pretty
 ```
 
-### Compatibility Note
+or via env:
 
-gsheets uses the [Fetch API](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) and [Promises](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise). Depending on your environment, you'll need to polyfill those. Recommendations:
+```sh
+npx GSHEETS_API_KEY=xyz gsheets --key=SPREADSHEETID --title=foobar --pretty
+```
 
-- [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
-- [es6-promise](https://github.com/stefanpenner/es6-promise)
+if you are using dotenv in your project, you can specify GSHEETS_API_KEY as a var in your .env file and run:
 
-For direct usage in the browser, there's a pre-built version of gsheets which the polyfills at [gsheets.polyfill.js](https://unpkg.com/gsheets@next/gsheets.polyfill.js) and [gsheets.polyfill.min.js](https://unpkg.com/gsheets@next/gsheets.polyfill.min.js).
+```sh
+NODE_OPTIONS='-r dotenv/config' gsheets --key=SPREADSHEETID--title=foobar --pretty
+```
 
 ## Features
 
 * Plain JS/JSON data. No 'models'. Just use `.map`, `.filter` etc.
 * Correct handling of numeric cells (no formatted strings for numbers!)
 * Empty cells are converted to `null`
-* A bit of metadata (i.e. when a spreadsheet was updated)
-* Empty rows are omitted
-* Correct handling of empty worksheets
-
-## Non-features
-
-* Authorization (only works with [published spreadsheets](https://support.google.com/docs/answer/37579?hl=en&ref_topic=2818999))
-* Querying, ordering, updating
-* Caching. Use a reverse proxy or implement your own caching strategy. I recommend this strongly since Google's API isn't the fastest and you don't want to hit rate limits.
+* Empty rows and empty columns are omitted
+* Empty worksheets returns an object with an empty data array: `{data: []}`
 
 ## Caveats
 
@@ -85,67 +83,14 @@ There are a few libraries around which allow you to access Google Spreadsheets, 
 var gsheets = require('gsheets');
 ```
 
-#### getSpreadsheet(<i>spreadsheetKey</i>: string): Promise
+#### getWorksheet(<i>spreadsheetKey</i>: string, <i>worksheetTitle</i>: string, , <i>gsheetsApiKey</i>: string): Promise
 
-Returns information about a spreadsheet including a list of worksheets.
-
-```js
-gsheets.getSpreadsheet('MY_KEY')
-  .then(res => console.log(res));
-```
-
-Example Response:
-
-```js
-{
-  "updated": "2014-11-19T10:20:18.068Z",
-  "title": "My Awesome Spreadsheet",
-  "worksheets": [
-    {
-      "id": "od6",
-      "title": "foobar"
-    },
-    // more worksheets ...
-  ]
-}
-```
-
-#### getWorksheet(<i>spreadsheetKey</i>: string, <i>worksheetTitle</i>: string): Promise
-
-Returns the contents of a worksheet, specified by its title. *Note* that this generates two requests (to resolve a worksheet's title). If you know a worksheet's ID (e.g. via a previous call to `listWorksheets`), use `getWorksheetById`
-
-For empty worksheets `data` is `null`.
-
-```js
-gsheets.getWorksheet('MY_KEY', 'foobar')
-  .then(res => console.log(res));
-```
-
-Example Response:
-
-```js
-{
-  "updated": "2014-11-19T10:20:18.068Z",
-  "title": "foobar",
-  "data": [
-    {
-      "foo": "bar",
-      "baz": 42,
-      "boing": null
-    },
-    // more rows ...
-  ]
-}
-```
-
-#### getWorksheetById(<i>spreadsheetKey</i>: string, <i>worksheetId</i>: string): Promise
-
-Returns the contents of a worksheet, specified by its ID.
+Returns the contents of a worksheet, specified by its title.
 
 For empty worksheets `data` is `[]`.
 
 ```js
-gsheets.getWorksheetById('MY_KEY', 'od6')
+gsheets.getWorksheet('SPREADSHEET_KEY', 'WORKSHEET_TITLE', 'GSHEETS_API_KEY')
   .then(res => console.log(res));
 ```
 
@@ -153,8 +98,6 @@ Example Response:
 
 ```js
 {
-  "updated": "2014-11-19T10:20:18.068Z",
-  "title": "foobar",
   "data": [
     {
       "foo": "bar",
@@ -166,25 +109,9 @@ Example Response:
 }
 ```
 
-## Command Line
-
-Write spreadsheet contents to a file as JSON or DSV.
-
-```
-gsheets --key [--id] [--title] [--out] [--pretty] [--dsv]
-  --key     Spreadsheet key; Outputs spreadsheet info if no other option is provided
-  --out     Output file; defaults to /dev/stdout
-  --id      Worksheet ID; use either this or --title to get worksheet contents
-  --title   Worksheet title; use either this or --id to get worksheet contents
-  --pretty  Pretty-print JSON
-  --dsv     Format as delimiter-separated values
-  --csv     Shortcut for --dsv=,
-  --tsv     Shortcut for --dsv=$'\t'
-```
-
 ## Development
 
-Run the tests with
+Replace "YOUR_GSHEETS_API_KEY" in index.tests.js with your key, then run the tests with:
 
 ```sh
 npm run test:watch

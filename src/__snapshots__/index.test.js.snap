@@ -1,12 +1,12 @@
-exports[`test Empty worksheet 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Empty worksheet 1`] = `
 Object {
   "data": Array [],
-  "title": "nothing",
-  "updated": "2014-11-19T10:20:18.068Z",
 }
 `;
 
-exports[`test Worksheet 1`] = `
+exports[`Worksheet 1`] = `
 Object {
   "data": Array [
     Object {
@@ -18,7 +18,7 @@ Object {
     Object {
       "id": 2,
       "name": " ",
-      "should": "number id; string name (it\'s a single space!); number value",
+      "should": "number id; string name (it's a single space!); number value",
       "väl-ue": 123456.789,
     },
     Object {
@@ -40,7 +40,5 @@ Object {
       "väl-ue": 12.3,
     },
   ],
-  "title": "something",
-  "updated": "2014-11-19T10:20:18.068Z",
 }
 `;
