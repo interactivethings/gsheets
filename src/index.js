@@ -1,23 +1,22 @@
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 const BASE_URL = "https://sheets.googleapis.com/v4/spreadsheets";
-const defaultApiKey = process.env.GSHEETS_API_KEY
+const defaultApiKey = process.env.GSHEETS_API_KEY;
 
 // Fetching
 
 function fetchFeed(key, title, apiKey) {
   const url = `${BASE_URL}/${key}/values/${title}?key=${apiKey}&valueRenderOption=UNFORMATTED_VALUE`;
   return fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        return Promise.reject(
-          new Error("The spreadsheet doesn´t exist or isn´t public.")
-        );
-      }
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
       return new Promise((resolve, reject) => {
-        if (data) {
+        if (data.error) {
+          reject(
+            new Error(
+              `Error: ${data.error.code} ${data.error.status}: ${data.error.message}`
+            )
+          );
+        } else if (data) {
           resolve(data);
         } else {
           reject(new Error("No spreadsheet was returned"));
@@ -29,12 +28,14 @@ function fetchFeed(key, title, apiKey) {
 function getWorksheet(key, title, apiKey = defaultApiKey) {
   return new Promise((resolve, reject) => {
     if (apiKey) {
-      const data = fetchFeed(key, title, apiKey).then(
-        parseWorksheet
-      );
+      const data = fetchFeed(key, title, apiKey).then(parseWorksheet);
       resolve(data);
     } else {
-      reject(new Error("No api key provided. Provide it via the apiKey argument or with a GSHEETS_API_KEY var via your environment."));
+      reject(
+        new Error(
+          "No api key provided. Provide it via the apiKey argument or with a GSHEETS_API_KEY var via your environment."
+        )
+      );
     }
   });
 }
@@ -42,7 +43,7 @@ function getWorksheet(key, title, apiKey = defaultApiKey) {
 // Parsing
 
 function parseWorksheet(data) {
-  const worksheetArrayOfRows = data.values
+  const worksheetArrayOfRows = data.values;
   // return empty if worksheet is empty
   if (!worksheetArrayOfRows) {
     return {
@@ -77,4 +78,4 @@ function parseWorksheet(data) {
   };
 }
 
-module.exports = { getWorksheet }
+module.exports = { getWorksheet };
