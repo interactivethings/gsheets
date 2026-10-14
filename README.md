@@ -1,3 +1,26 @@
+> [!CAUTION]
+> ## 🚨 DEPRECATION NOTICE
+>
+> **`gsheets` is officially deprecated and no longer maintained.**
+> 
+> When this package was created, lightweight helpers over the Google Sheets API were necessary to avoid bulky dependencies. Today, the modern JavaScript/TypeScript ecosystem offers well-maintained alternatives.
+>
+> ### Recommended Alternatives & Resources
+> 
+> * **Browser & Client-Side JavaScript:**
+>   * Consult the [Google Sheets REST API v4 Guide](https://developers.google.com/sheets/api/reference/rest) for direct HTTP requests via `fetch()`.
+>   * Use the official [`gapi` (Google API Client for Browser)](https://github.com/google/google-api-javascript-client) for client-side environments supporting OAuth and discovery docs.
+> 
+> * **Node.js & TypeScript (Server-Side):**
+>   * Use the standalone scoped package **[`@googleapis/sheets`](https://www.npmjs.com/package/@googleapis/sheets)** to interact with the API without pulling down the monolithic `googleapis` package.
+>   * Use [`google-spreadsheet`](https://www.npmjs.com/package/google-spreadsheet) for high-level object abstractions and built-in rate-limit retries.
+>   * Use the full monolithic [`googleapis` npm package](https://www.npmjs.com/package/googleapis) if your project integrates across multiple Google APIs.
+> 
+> * **Self-Contained / Copy-Paste:**
+>   * Since this library is only a few lines wrapping the native Google Sheets API, you are welcome to simply copy the source code directly into your own project if you prefer a zero-dependency helper.
+
+---
+
 # gsheets
 
 Get public Google Sheets as plain JavaScript/JSON.
